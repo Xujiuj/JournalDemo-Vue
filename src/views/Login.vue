@@ -167,23 +167,24 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-import { authApi } from '@/api'
-import PageScaffold from '@/components/layout/PageScaffold.vue'
-import ShimmerButton from '@/components/ui/ShimmerButton.vue'
+import { useRouter } from 'vue-router';
+import { useUserStore, useSysInfoStore } from '@/stores';
+import { authApi } from '@/api';
+import PageScaffold from '@/components/layout/PageScaffold.vue';
+import ShimmerButton from '@/components/ui/ShimmerButton.vue';
 
-const router = useRouter()
-const store = useStore()
-const submitting = ref(false)
-const loginError = ref('')
-const rememberMe = ref(false)
+const router = useRouter();
+const userStore = useUserStore();
+const sysInfoStore = useSysInfoStore();
+const submitting = ref(false);
+const loginError = ref('');
+const rememberMe = ref(false);
 const ROUTES = Object.freeze({
   home: '/',
-  register: '/register'
-})
-const branding = computed(() => store.getters['sysInfo/brandingInfo'])
-const logoUrl = computed(() => branding.value.logo)
+  register: '/register',
+});
+const branding = computed(() => sysInfoStore.brandingInfo);
+const logoUrl = computed(() => branding.value.logo);
 
 const formData = ref({
   username: '',
@@ -217,8 +218,8 @@ const handleLogin = async () => {
       // 保存token和用户信息
       const { token, user } = response.data
       
-      // 更新Vuex store
-      store.dispatch('user/login', { userInfo: user, token })
+      // 更新Pinia store
+      userStore.login({ userInfo: user, token });
       
       // 保存登录信息到 localStorage（记住我功能）
       if (rememberMe.value) {
@@ -245,6 +246,9 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
+/* 组件样式导入 */
+@import '@/assets/styles/components/forms.css';
+@import '@/assets/styles/components/buttons.css';
 /* 自定义滚动条 */
 ::-webkit-scrollbar {
   width: 8px;

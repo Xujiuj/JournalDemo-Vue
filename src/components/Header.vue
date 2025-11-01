@@ -165,13 +165,26 @@
           >
             <span class="relative z-10">{{ item.menuName }}</span>
             
-            <!-- Hover Background (lowest layer) -->
-            <div class="absolute inset-0 bg-gradient-to-r from-cyan-50/80 to-blue-50/80 dark:from-cyan-900/20 dark:to-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+            <!-- Active Background Box - slides left/right on page switch -->
+            <div class="absolute inset-0 rounded-lg overflow-hidden z-0">
+              <div 
+                class="nav-active-bg absolute inset-0 bg-gradient-to-r from-cyan-50/80 to-blue-50/80 dark:from-cyan-900/20 dark:to-blue-900/20"
+                :class="{
+                  'active': $route.path === item.menuPath,
+                  'slide-left': activeIndicatorDirection === 'left' && $route.path === item.menuPath,
+                  'slide-right': activeIndicatorDirection === 'right' && $route.path === item.menuPath
+                }"
+              ></div>
+            </div>
             
-            <!-- Bottom Gradient Effect - appears only on hover/active, spreads from center -->
+            <!-- Hover Background (only on hover, not active) -->
+            <div class="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-50/80 to-blue-50/80 dark:from-cyan-900/20 dark:to-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
+                 :class="{ 'hidden': $route.path === item.menuPath }"></div>
+            
+            <!-- Bottom Gradient Effect - center spread on hover/active -->
             <div class="absolute bottom-0 left-0 right-0 h-1 overflow-hidden z-20">
               <div
-                class="w-full h-full bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-700 transform origin-center transition duration-500 ease-out scale-x-0 group-hover:scale-x-100 opacity-0 group-hover:opacity-100"
+                class="nav-indicator h-full bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-700 transform origin-center transition duration-500 ease-out scale-x-0 group-hover:scale-x-100 opacity-0 group-hover:opacity-100"
                 :class="{ 'scale-x-100 opacity-100': $route.path === item.menuPath }"
               ></div>
             </div>
@@ -183,45 +196,50 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-import GlowingSearchBox from '@/components/ui/GlowingSearchBox.vue'
+import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useUserStore, useSysInfoStore } from '@/stores';
+import GlowingSearchBox from '@/components/ui/GlowingSearchBox.vue';
+import { isForward } from '@/utils/routeOrder';
 
-const router = useRouter()
-const store = useStore()
-const searchQuery = ref('')
+const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore();
+const sysInfoStore = useSysInfoStore();
+const searchQuery = ref('');
+const activeIndicatorDirection = ref('left'); // 'left' 或 'right'
+const previousActiveIndex = ref(-1); // 上一个激活的导航项索引
 const ROUTES = Object.freeze({
   articles: '/articles',
   register: '/register',
-  login: '/login'
-})
-const PROTECTED_ROUTES = ['/submit', '/my-submissions']
+  login: '/login',
+});
+const PROTECTED_ROUTES = ['/submit', '/my-submissions'];
 
-// 从 Vuex 获取系统信息和菜单
-const branding = computed(() => store.getters['sysInfo/brandingInfo'])
+// 从 Pinia stores 获取系统信息和菜单
+const branding = computed(() => sysInfoStore.brandingInfo);
 const navItems = computed(() => {
-  const menus = store.getters['sysInfo/getMenuList'] || []
+  const menus = sysInfoStore.getMenuList || [];
   return menus
     .filter((item) => item?.menuParentId === 0 && item?.menuPath && item.menuType === 'M')
-    .sort((a, b) => (a.menuOrderNum ?? 0) - (b.menuOrderNum ?? 0))
-})
-const displayPublisher = computed(() => branding.value.publisher)
-const displayIssn = computed(() => branding.value.issn)
-const logoUrl = computed(() => branding.value.logo)
+    .sort((a, b) => (a.menuOrderNum ?? 0) - (b.menuOrderNum ?? 0));
+});
+const displayPublisher = computed(() => branding.value.publisher);
+const displayIssn = computed(() => branding.value.issn);
+const logoUrl = computed(() => branding.value.logo);
 const brandInitial = computed(() => {
-  const source = branding.value.shortName || branding.value.name
-  return source.charAt(0).toUpperCase()
-})
+  const source = branding.value.shortName || branding.value.name;
+  return source.charAt(0).toUpperCase();
+});
 
-// 浠?Vuex 鑾峰彇鐢ㄦ埛淇℃伅
-const currentUser = computed(() => store.getters['user/currentUser'])
+// 从 Pinia stores 获取用户信息
+const currentUser = computed(() => userStore.currentUser);
 const userMenus = computed(() => {
-  const menus = store.getters['sysInfo/getMenuList'] || []
+  const menus = sysInfoStore.getMenuList || [];
   return menus
     .filter((item) => item?.menuParentId === 8 && item?.menuType === 'M')
-    .sort((a, b) => (a.menuOrderNum ?? 0) - (b.menuOrderNum ?? 0))
-})
+    .sort((a, b) => (a.menuOrderNum ?? 0) - (b.menuOrderNum ?? 0));
+});
 
 // 用户下拉菜单状态
 const isUserMenuOpen = ref(false)
@@ -367,13 +385,13 @@ const toggleUserMenu = (event) => {
 
 const handleLogout = async () => {
   try {
-    await store.dispatch('user/logout')
-    isUserMenuOpen.value = false
-    router.push(branding.value.homeRoute)
+    userStore.logout();
+    isUserMenuOpen.value = false;
+    router.push(branding.value.homeRoute);
   } catch (error) {
-    console.error('Logout failed:', error)
+    console.error('Logout failed:', error);
   }
-}
+};
 
 // 点击外部关闭菜单
 const closeUserMenu = (event) => {
@@ -394,6 +412,39 @@ const closeUserMenu = (event) => {
   }
 }
 
+// 监听路由变化，确定指示条滑动方向
+watch(() => route.path, (toPath, fromPath) => {
+  if (!toPath) return
+  
+  // 找到当前激活的导航项索引
+  const currentIndex = navItems.value.findIndex(item => {
+    const itemPath = item.menuPath?.trim()
+    if (!itemPath) return false
+    // 精确匹配或路径匹配
+    return toPath === itemPath || toPath.startsWith(itemPath + '/')
+  })
+  
+  if (currentIndex >= 0) {
+    // 如果有上一个激活项，比较索引判断方向
+    if (previousActiveIndex.value >= 0 && previousActiveIndex.value !== currentIndex) {
+      // 索引增大表示向右移动（在导航栏右侧），指示条应从左滑入
+      // 索引减小表示向左移动（在导航栏左侧），指示条应从右滑入
+      activeIndicatorDirection.value = currentIndex > previousActiveIndex.value ? 'left' : 'right'
+    } else {
+      // 首次激活或无法判断，使用路由方向判断
+      if (fromPath) {
+        const currentRoute = { path: toPath };
+        const previousRoute = { path: fromPath };
+        const forward = isForward(previousRoute, currentRoute, sysInfoStore);
+        activeIndicatorDirection.value = forward ? 'left' : 'right';
+      } else {
+        activeIndicatorDirection.value = 'left' // 默认从左滑入
+      }
+    }
+    previousActiveIndex.value = currentIndex
+  }
+}, { immediate: true })
+
 onMounted(() => {
   // 使用捕获阶段为 false，确保元素上的事件处理器先执行
   document.addEventListener('click', closeUserMenu, false)
@@ -407,25 +458,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* 下拉框动画 - 从上到下弹出 */
-.dropdown-enter-active {
-  animation: dropdownSlideDown 0.22s ease-out;
-  transform-origin: top center;
-}
-
-.dropdown-leave-active {
-  animation: dropdownSlideDown 0.18s ease-in reverse;
-  transform-origin: top center;
-}
-
-@keyframes dropdownSlideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-6px) scaleY(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scaleY(1);
-  }
-}
+/* 组件样式导入 */
+@import '@/assets/styles/components/header.css';
+@import '@/assets/styles/components/navigation.css';
+@import '@/assets/styles/components/search-box.css';
 </style>

@@ -17,49 +17,63 @@
       <!-- Notices List -->
         <section class="relative z-10 py-8">
           <div class="grid gap-8">
-            <div v-for="(notice, index) in notices" :key="notice.noticeId" class="group bg-gradient-to-br from-slate-900/95 to-slate-800/95 dark:from-slate-900/95 dark:to-slate-800/95 backdrop-blur-sm rounded-2xl shadow-academic p-8 hover:shadow-hover transition-all duration-700 ease-out hover:-translate-y-3 hover:scale-105 animate-slide-up border border-slate-700/40 overflow-hidden relative" :style="{ animationDelay: (index * 0.1) + 's' }">
+            <article v-for="(notice, index) in notices" :key="notice.noticeId" class="group article-card animate-slide-up" :style="{ animationDelay: (index * 0.1) + 's' }">
               <!-- 流光效果层 -->
-              <div class="absolute inset-0 opacity-0 hover:opacity-100 focus:opacity-0 transition-opacity duration-150 pointer-events-none overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-amber-200/10 to-transparent dark:via-amber-200/5 transform -translate-x-full hover:translate-x-full transition-transform duration-700 ease-in-out" style="will-change: transform;"></div>
-                <!-- 额外的亮光效果 -->
-                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-amber-100/5 to-transparent dark:via-amber-100/3 transform -translate-x-full hover:translate-x-full transition-transform duration-450 ease-in-out" style="animation-delay: 0.06s; will-change: transform;"></div>
+              <div class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-150 pointer-events-none overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-amber-200/10 to-transparent dark:via-amber-200/5 transform -translate-x-full hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-amber-100/5 to-transparent dark:via-amber-100/3 transform -translate-x-full hover:translate-x-full transition-transform duration-450 ease-in-out" style="animation-delay: 0.06s;"></div>
               </div>
-              <!-- 顶部彩色横条（根据类型变色） -->
-              <div class="absolute top-0 left-0 w-full h-1 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out" :class="getTopBarGradient(notice.noticeType)"></div>
               
               <div class="relative z-10">
-                <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
-                  <div class="flex items-center gap-3">
-                    <span :class="getTypeBadgeClasses(notice.noticeType)">
-                      {{ getNoticeTypeText(notice.noticeType) }}
-                    </span>
-                    <span class="text-sm text-slate-400">{{ formatDate(notice.noticePublishDate) }}</span>
-                  </div>
-                  <div class="text-xs px-2 py-1 rounded-full border border-slate-600 text-slate-300 uppercase tracking-wide">
-                    {{ notice.noticePriority || 'NORMAL' }}
-                  </div>
+                <!-- 第一行：通知类型 -->
+                <div class="mb-3">
+                  <span :class="getTypeBadgeClasses(notice.noticeType)">
+                    {{ getNoticeTypeText(notice.noticeType) }}
+                  </span>
                 </div>
-                
-                <h2 class="notice-title">
-                  <router-link :to="`/notices/${notice.noticeId}`">{{ notice.noticeTitle }}</router-link>
-                </h2>
-                
-                <p class="notice-content">{{ notice.noticeContent }}</p>
-                
-                <div class="notice-footer">
-                  <div class="notice-views">
-                    <i class="icon-eye">👁</i>
-                    {{ notice.noticeViews || 0 }} views
-                  </div>
-                  <router-link :to="`/notices/${notice.noticeId}`" class="group/link inline-flex items-center text-white font-semibold hover:text-amber-300 transition-all duration-500 ease-out hover:translate-x-1">
+
+                <!-- 第二行：标题 -->
+                <div class="mb-2">
+                  <h3 class="text-xl font-bold text-white dark:text-white font-serif leading-tight group-hover:text-amber-300 dark:group-hover:text-amber-300 transition-colors duration-300 line-clamp-2">
+                    <router-link 
+                      :to="`/notices/${notice.noticeId}`" 
+                      class="hover:underline block"
+                    >
+                      {{ notice.noticeTitle }}
+                    </router-link>
+                  </h3>
+                </div>
+
+                <!-- 第二行：内容 -->
+                <div class="flex items-center text-slate-300 dark:text-slate-300 text-sm mb-2">
+                  <p class="line-clamp-2">{{ notice.noticeContent }}</p>
+                </div>
+
+                <!-- 第三行：左侧Read More，右侧观看量 -->
+                <div class="flex justify-between items-center mt-3">
+                  <!-- 左边：Read More -->
+                  <router-link 
+                    :to="`/notices/${notice.noticeId}`"
+                    class="group/link inline-flex items-center text-white dark:text-white font-semibold hover:text-amber-300 dark:hover:text-amber-300 transition-all duration-300 hover:translate-x-1 text-sm"
+                  >
                     Read More
-                    <svg class="w-4 h-4 ml-2 transition-transform duration-500 ease-out group-hover/link:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 ml-2 transition-transform duration-300 group-hover/link:translate-x-1"
+                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                   </router-link>
+
+                  <!-- 右边：观看量 -->
+                  <div class="flex items-center text-slate-400 dark:text-slate-400 text-sm">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                    {{ notice.noticeViews || 0 }} views
+                  </div>
                 </div>
               </div>
-            </div>
+            </article>
           </div>
         </section>
 
@@ -195,3 +209,9 @@ onMounted(() => {
   loadNotices()
 })
 </script>
+
+<style scoped>
+/* 组件样式导入 */
+@import '@/assets/styles/components/article-cards.css';
+@import '@/assets/styles/components/feedback.css';
+</style>

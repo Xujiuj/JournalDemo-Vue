@@ -58,13 +58,13 @@
             <template v-for="(author, index) in sortedAuthors" :key="author.authorId">
               <span 
                 @click="openAuthorModal($event, author)"
-                class="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer inline relative"
+                class="author-click-target text-blue-600 dark:text-blue-400 hover:underline cursor-pointer inline relative"
               >
                 {{ author.authorName }}
                 <sup v-if="author.authorIsCorresponding === 1"
-                     class="text-blue"
+                     class="corresponding-author-icon"
                      title="通讯作者">
-                      <svg class="w-3 h-3 inline"
+                      <svg class="w-4 h-4 inline"
                            fill="none"
                            stroke="currentColor"
                            viewBox="0 0 24 24">
@@ -119,6 +119,9 @@
             </div>
           </section>
 
+          <!-- 分割线 -->
+          <hr class="nature-divider" />
+
           <!-- Author information -->
           <section id="author-information" class="mb-12">
             <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Author information</h2>
@@ -162,6 +165,9 @@
             </div>
           </section>
 
+          <!-- 分割线 -->
+          <hr class="nature-divider" />
+
           <!-- Supplementary information -->
           <section id="supplementary-information" class="mb-12">
             <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Supplementary information</h2>
@@ -199,6 +205,9 @@
               </div>
             </div>
           </section>
+
+          <!-- 分割线 -->
+          <hr class="nature-divider" />
 
           <!-- About this article -->
           <section id="about-this-article" class="mb-12">
@@ -373,18 +382,19 @@
 
     <!-- 作者详情弹窗（气泡式） -->
     <Teleport to="body">
+      <!-- 背景遮罩 -->
       <div
         v-if="showAuthorModal && selectedAuthor"
-        class="fixed inset-0 z-50"
+        class="fixed inset-0 z-50 bg-transparent"
         @click="closeAuthorModal"
-        @scroll="closeAuthorModal"
+      ></div>
+      <!-- 弹窗内容（气泡样式） -->
+      <div
+        v-if="showAuthorModal && selectedAuthor"
+        class="author-modal fixed bg-white dark:bg-slate-800 rounded-lg shadow-2xl w-96 p-4 z-[60]"
+        :style="{ top: authorModalPosition.top + 'px', left: authorModalPosition.left + 'px' }"
+        @click.stop
       >
-        <!-- 弹窗内容（气泡样式） -->
-        <div
-          class="author-modal absolute bg-white dark:bg-slate-800 rounded-lg shadow-2xl w-96 p-4"
-          :style="{ top: authorModalPosition.top + 'px', left: authorModalPosition.left + 'px' }"
-          @click.stop
-        >
           <!-- 气泡箭头 -->
           <div class="absolute -top-2 left-6 w-4 h-4 bg-white dark:bg-slate-800 transform rotate-45 border-l border-t border-slate-200 dark:border-slate-700"></div>
           <!-- 关闭按钮 -->
@@ -397,51 +407,38 @@
             </svg>
           </button>
 
-          <!-- 通讯作者标题 -->
-          <div v-if="selectedAuthor.authorIsCorresponding" class="mb-4">
-            <h3 class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">
+          <!-- 作者标题 -->
+          <div class="mb-4">
+            <h3 v-if="selectedAuthor.authorIsCorresponding" class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">
               Corresponding author
             </h3>
             <h4 class="text-xl font-bold text-slate-900 dark:text-white">
               {{ selectedAuthor.authorName }}
             </h4>
           </div>
-          <!-- 普通作者标题 -->
-          <div v-else class="mb-4">
-            <h4 class="text-xl font-bold text-slate-900 dark:text-white">
-              {{ selectedAuthor.authorName }}
-            </h4>
-          </div>
 
-          <!-- 贡献声明 -->
-          <div v-if="selectedAuthor.authorContribution" class="mb-4">
-            <p class="text-sm text-slate-700 dark:text-slate-300">
-              <span v-if="equalContributors.length > 1">
-                These authors contributed equally: 
-                <span v-for="(contributor, index) in equalContributors" :key="contributor.authorId">
-                  {{ contributor.authorName }}<span v-if="index < equalContributors.length - 1">, </span>
-                </span>
-              </span>
-              <span v-else>
-                {{ selectedAuthor.authorContribution }}
-              </span>
-            </p>
-          </div>
-
-          <!-- 单位信息 -->
-          <div v-if="selectedAuthor.authorAffiliation" class="mb-4">
-            <p class="text-sm text-slate-700 dark:text-slate-300">
-              {{ selectedAuthor.authorAffiliation }}
-            </p>
+          <!-- 单位信息（机构） -->
+          <div class="mb-4">
+            <div class="space-y-1">
+              <p v-if="selectedAuthor.authorDepartment" class="text-sm text-slate-700 dark:text-slate-300">
+                {{ selectedAuthor.authorDepartment }}
+              </p>
+              <p v-if="selectedAuthor.authorAffiliation" class="text-sm text-slate-700 dark:text-slate-300">
+                {{ selectedAuthor.authorAffiliation }}
+                <span v-if="selectedAuthor.authorCity && selectedAuthor.authorCity !== '<NA>'">, {{ selectedAuthor.authorCity }}</span>
+                <span v-if="selectedAuthor.authorState && selectedAuthor.authorState !== '<NA>'">, {{ selectedAuthor.authorState }}</span>
+                <span v-if="selectedAuthor.authorCountry && selectedAuthor.authorCountry !== '<NA>'">, {{ selectedAuthor.authorCountry }}</span>
+              </p>
+            </div>
           </div>
 
           <!-- 分隔线 -->
           <hr class="my-4 border-slate-200 dark:border-slate-700" />
 
           <!-- 通讯作者联系信息 -->
-          <div v-if="selectedAuthor.authorIsCorresponding" class="mb-4">
-            <div class="flex items-center gap-2 mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-600 dark:text-slate-400" viewBox="0 0 20 20" fill="currentColor">
+          <div v-if="selectedAuthor.authorIsCorresponding === 1" class="mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-600 dark:text-slate-400 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                 <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
               </svg>
@@ -469,34 +466,34 @@
             <span>Search all author publications</span>
           </button>
         </div>
-      </div>
     </Teleport>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { articleApi } from '@/api'
-import { useStore } from 'vuex'
+import { ref, onMounted, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { articleApi } from '@/api';
+import { useSysInfoStore, useReferenceDataStore } from '@/stores';
 
-const route = useRoute()
-const router = useRouter()
-const store = useStore()
+const route = useRoute();
+const router = useRouter();
+const sysInfoStore = useSysInfoStore();
+const referenceDataStore = useReferenceDataStore();
 const ROUTES = Object.freeze({
   home: '/',
-  articles: '/articles'
-})
-const article = ref(null)
-const loading = ref(true)
-const error = ref(null)
-const isBookmarked = ref(false)
-const isLiked = ref(false)
+  articles: '/articles',
+});
+const article = ref(null);
+const loading = ref(true);
+const error = ref(null);
+const isBookmarked = ref(false);
+const isLiked = ref(false);
 
 // 作者信息
-const authors = ref([])
-const branding = computed(() => store.getters['sysInfo/brandingInfo'])
-const citationJournal = computed(() => branding.value.citationName)
+const authors = ref([]);
+const branding = computed(() => sysInfoStore.brandingInfo);
+const citationJournal = computed(() => branding.value.citationName);
 // 作者详情弹窗
 const showAuthorModal = ref(false)
 const selectedAuthor = ref(null)
@@ -513,8 +510,8 @@ const figures = ref([])
 const keywords = ref([])
 
 // 枚举数据
-const articleStatusOptions = computed(() => store.getters['referenceData/articleStatusOptions'] || [])
-const manuscriptTypeOptions = computed(() => store.getters['referenceData/manuscriptTypeOptions'] || [])
+const articleStatusOptions = computed(() => referenceDataStore.articleStatusOptions || []);
+const manuscriptTypeOptions = computed(() => referenceDataStore.manuscriptTypeOptions || []);
 const subjectArea = ref('')
 
 // 计算属性：文章类别标签
@@ -555,27 +552,59 @@ const equalContributors = computed(() => {
 
 // 打开作者详情弹窗（气泡式）
 const openAuthorModal = (event, author) => {
-  selectedAuthor.value = author
-  showAuthorModal.value = true
+  event.preventDefault()
+  event.stopPropagation()
   
-  // 计算弹窗位置（气泡出现在点击的元素下方）
-  const rect = event.target.getBoundingClientRect()
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-  authorModalPosition.value = {
-    top: rect.bottom + scrollTop + 8,
-    left: rect.left
+  selectedAuthor.value = author
+  
+  // 获取点击的元素（span本身，不是内部的sup或svg）
+  const targetElement = event.currentTarget
+  
+  // 立即计算位置，不等待DOM更新
+  const rect = targetElement.getBoundingClientRect()
+  const modalWidth = 384 // w-96 = 24rem = 384px
+  const modalHeight = 320 // 估计高度
+  const spacing = 8 // 间距
+  const viewportWidth = window.innerWidth
+  const viewportHeight = window.innerHeight
+  
+  // 默认显示在点击元素的下方右侧
+  let top = rect.bottom + spacing
+  let left = rect.right + spacing
+  
+  // 如果右侧空间不够，显示在左侧
+  if (left + modalWidth > viewportWidth - 20) {
+    left = rect.left - modalWidth - spacing
+    if (left < 20) {
+      // 如果左侧也不够，就显示在元素下方，左对齐
+      left = Math.max(20, rect.left)
+    }
   }
   
-  // 确保弹窗不超出屏幕右侧
-  setTimeout(() => {
-    const modal = document.querySelector('.author-modal')
-    if (modal) {
-      const modalRect = modal.getBoundingClientRect()
-      if (modalRect.right > window.innerWidth - 20) {
-        authorModalPosition.value.left = window.innerWidth - modalRect.width - 20
-      }
+  // 如果下方空间不够，显示在上方
+  if (top + modalHeight > viewportHeight - 20) {
+    top = rect.top - modalHeight - spacing
+    if (top < 20) {
+      // 如果上方也不够，就显示在可见区域中间
+      top = Math.max(20, (viewportHeight - modalHeight) / 2)
     }
-  }, 0)
+  }
+  
+  // 确保不超出边界
+  if (left < 20) left = 20
+  if (top < 20) top = 20
+  if (left + modalWidth > viewportWidth - 20) {
+    left = viewportWidth - modalWidth - 20
+  }
+  
+  // 使用视口坐标（fixed定位）
+  authorModalPosition.value = {
+    top: top,
+    left: left
+  }
+  
+  // 最后再显示弹窗，位置已经计算好
+  showAuthorModal.value = true
 }
 
 // 关闭作者详情弹窗
@@ -603,11 +632,11 @@ const fetchArticle = async () => {
     
     try {
       await Promise.all([
-        store.dispatch('referenceData/ensureArticleStatus'),
-        store.dispatch('referenceData/ensureManuscriptType')
-      ])
+        referenceDataStore.ensureArticleStatus(),
+        referenceDataStore.ensureManuscriptType(),
+      ]);
     } catch (err) {
-      console.warn('Failed to load reference data:', err)
+      console.warn('Failed to load reference data:', err);
     }
     
     // 获取文章数据（通过manuscriptId）
@@ -903,35 +932,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 确保 sticky 定位能够正常工作 */
-.article-details {
-  position: relative;
-  overflow: visible;
-}
-
-.article-details .container {
-  position: relative;
-  overflow: visible;
-}
-
-.article-details .flex {
-  position: relative;
-  overflow: visible;
-}
-
-/* 右侧 sections 悬挂效果 */
-.article-details .sticky-section {
-  position: sticky !important;
-  will-change: transform;
-  align-self: flex-start;
-}
-
-/* 确保父容器不会阻止 sticky */
-.article-details > div.container {
-  overflow: visible !important;
-}
-
-.article-details > div.container > div.flex {
-  overflow: visible !important;
-}
+/* ArticleDetails 页面专用样式 - 完全独立，不依赖通用样式 */
+@import '@/assets/styles/pages/article-details.css';
 </style>

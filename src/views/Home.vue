@@ -310,57 +310,59 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import PageScaffold from '@/components/layout/PageScaffold.vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
+import { useSysInfoStore, useContentStore, useReferenceDataStore } from '@/stores';
+import PageScaffold from '@/components/layout/PageScaffold.vue';
 import {
   splitKeywords,
   normalizeAuthors,
   formatAuthorNames,
-  formatDate as formatArticleDate
-} from '@/utils/article'
+  formatDate as formatArticleDate,
+} from '@/utils/article';
+import {
+  scrollToElement,
+  initPageAnimations,
+  cleanupScrollTriggers,
+} from '@/utils/animations';
 
-// 注册GSAP插件
-gsap.registerPlugin(ScrollTrigger)
-
-const router = useRouter()
-const store = useStore()
+const router = useRouter();
+const sysInfoStore = useSysInfoStore();
+const contentStore = useContentStore();
+const referenceDataStore = useReferenceDataStore();
 
 const ROUTES = Object.freeze({
   home: '/',
   articles: '/articles',
   submit: '/submit',
-  notices: '/notices'
-})
+  notices: '/notices',
+});
 
-// 从 Vuex 获取系统信息
-const branding = computed(() => store.getters['sysInfo/brandingInfo'])
-const heroTitle = computed(() => branding.value.name)
-const heroSubtitle = computed(() => branding.value.tagline)
-const heroLogo = computed(() => branding.value.logo)
-const citationJournal = computed(() => branding.value.citationName)
+// 从 Pinia stores 获取系统信息
+const branding = computed(() => sysInfoStore.brandingInfo);
+const heroTitle = computed(() => branding.value.name);
+const heroSubtitle = computed(() => branding.value.tagline);
+const heroLogo = computed(() => branding.value.logo);
+const citationJournal = computed(() => branding.value.citationName);
 
-const featuredArticles = computed(() => store.getters['content/featuredArticles'] || [])
-const latestNotices = computed(() => store.getters['content/latestNotices'] || [])
-const isLoadingFeatured = computed(() => store.getters['content/isLoadingFeatured'])
-const isLoadingNotices = computed(() => store.getters['content/isLoadingNotices'])
-const articleStatusMap = computed(() => store.getters['referenceData/articleStatusMap'] || {})
-const showStickyBanner = ref(true)
+const featuredArticles = computed(() => contentStore.featuredArticles || []);
+const latestNotices = computed(() => contentStore.latestNotices || []);
+const isLoadingFeatured = computed(() => contentStore.isLoadingFeatured);
+const isLoadingNotices = computed(() => contentStore.isLoadingNotices);
+const articleStatusMap = computed(() => referenceDataStore.articleStatusMap || {});
+const showStickyBanner = ref(true);
 
 const loadData = async () => {
   try {
     await Promise.all([
-      store.dispatch('content/fetchFeaturedArticles'),
-      store.dispatch('content/fetchLatestNotices'),
-      store.dispatch('referenceData/ensureArticleStatus')
-    ])
+      contentStore.fetchFeaturedArticles(),
+      contentStore.fetchLatestNotices(),
+      referenceDataStore.ensureArticleStatus(),
+    ]);
   } catch (error) {
-    console.error('Failed to load home data:', error)
+    console.error('Failed to load home data:', error);
   }
-}
+};
 
 const formatDate = (dateString) => {
   return formatArticleDate(dateString, 'en-US', {
@@ -465,26 +467,8 @@ const goToSubmit = () => {
 
 // 平滑滚动到下一栏（RecentPublications）
 const scrollToNextSection = () => {
-  const nextSection = document.querySelector('.recent-publications-section')
-  
-  if (nextSection) {
-    // 获取section的位置
-    const sectionTop = nextSection.getBoundingClientRect().top + window.pageYOffset
-    const headerOffset = 80 // 考虑固定头部的高度
-    const targetY = Math.max(0, sectionTop - headerOffset)
-    const currentY = window.pageYOffset || document.documentElement.scrollTop
-    
-    // 使用GSAP实现平滑滚动动画（动画化scrollTop）
-    gsap.to({ scrollTop: currentY }, {
-      duration: 0.05,
-      scrollTop: targetY,
-      ease: 'power2.inOut',
-      onUpdate: function() {
-        window.scrollTo(0, this.targets()[0].scrollTop)
-      }
-    })
-  }
-}
+  scrollToElement('.recent-publications-section', 80, 0.05);
+};
 
 // 键盘事件处理
 const handleKeyDown = (event) => {
@@ -507,7 +491,7 @@ const handleWheel = (event) => {
   }
   
   const currentTime = Date.now()
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+  const scrollTop = window.scrollY || document.documentElement.scrollTop
   
   // 检查是否在Hero区域（页面顶部到RecentPublications之间的区域）
   const heroSection = document.querySelector('.hero-section')
@@ -557,159 +541,32 @@ const handleWheel = (event) => {
 
 // 滚动到Hero区域
 const scrollToHeroSection = () => {
-  const currentY = window.pageYOffset || document.documentElement.scrollTop
-  
-  // 使用GSAP实现平滑滚动动画
-  gsap.to({ scrollTop: currentY }, {
-    duration: 0.1,
-    scrollTop: 0,
-    ease: 'power2.inOut',
-    onUpdate: function() {
-      window.scrollTo(0, this.targets()[0].scrollTop)
-    }
-  })
-}
+  scrollToElement('.hero-section', 0, 0.1);
+};
 
 onMounted(async () => {
-  await loadData()
-  window.addEventListener('keydown', handleKeyDown)
-  window.addEventListener('wheel', handleWheel, { passive: false })
-  
-  // 等待DOM更新后初始化动画
-  await nextTick()
-  initPageAnimations()
-})
+  await loadData();
+  window.addEventListener('keydown', handleKeyDown);
+  window.addEventListener('wheel', handleWheel, { passive: false });
 
-// 初始化页面动画
-const initPageAnimations = () => {
-  // Hero区域动画
-  const heroTitle = document.querySelector('.hero-section h2')
-  const heroSubtitle = document.querySelector('.hero-section p')
-  const heroButtons = document.querySelectorAll('.hero-section button')
-  const heroImage = document.querySelector('.hero-section img')
-  
-  if (heroTitle) {
-    gsap.from(heroTitle, {
-      opacity: 0,
-      y: 50,
-      duration: 1,
-      ease: 'power3.out',
-      delay: 0.2
-    })
-  }
-  
-  if (heroSubtitle) {
-    gsap.from(heroSubtitle, {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: 'power3.out',
-      delay: 0.4
-    })
-  }
-  
-  if (heroButtons.length > 0) {
-    gsap.from(heroButtons, {
-      opacity: 0,
-      y: 20,
-      duration: 0.6,
-      ease: 'power2.out',
-      stagger: 0.1,
-      delay: 0.6
-    })
-  }
-  
-  if (heroImage) {
-    gsap.from(heroImage.parentElement, {
-      opacity: 0,
-      scale: 0.9,
-      duration: 1,
-      ease: 'power3.out',
-      delay: 0.3
-    })
-  }
-  
-  // 文章卡片滚动动画
-  const articleCards = document.querySelectorAll('.recent-publications-section article')
-  articleCards.forEach((card, index) => {
-    gsap.from(card, {
-      scrollTrigger: {
-        trigger: card,
-        start: 'top 80%',
-        toggleActions: 'play none none none'
-      },
-      opacity: 0,
-      y: 50,
-      duration: 0.6,
-      ease: 'power2.out',
-      delay: index * 0.1
-    })
-  })
-  
-  // 公告卡片滚动动画
-  const noticeSection = document.querySelector('section.py-20:nth-of-type(2)')
-  if (noticeSection) {
-    const noticeCards = noticeSection.querySelectorAll('.grid > div[class*="group"]')
-    noticeCards.forEach((card, index) => {
-      gsap.from(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 80%',
-          toggleActions: 'play none none none'
-        },
-        opacity: 0,
-        x: -30,
-        duration: 0.6,
-        ease: 'power2.out',
-        delay: index * 0.1
-      })
-    })
-  }
-  
-  // CTA区域动画
-  const ctaSection = document.querySelector('section.py-20:last-of-type')
-  if (ctaSection) {
-    gsap.from(ctaSection, {
-      scrollTrigger: {
-        trigger: ctaSection,
-        start: 'top 80%',
-        toggleActions: 'play none none none'
-      },
-      opacity: 0,
-      y: 40,
-      duration: 0.8,
-      ease: 'power3.out'
-    })
-  }
-  
-  // 按钮悬停效果增强 - 统一浮动效果
-  const buttons = document.querySelectorAll('.hero-section button, .recent-publications-section button, section.py-20 button')
-  buttons.forEach(button => {
-    button.addEventListener('mouseenter', () => {
-      gsap.to(button, {
-        scale: 1.02,
-        y: -2,
-        duration: 0.3,
-        ease: 'power2.out'
-      })
-    })
-    
-    button.addEventListener('mouseleave', () => {
-      gsap.to(button, {
-        scale: 1,
-        y: 0,
-        duration: 0.3,
-        ease: 'power2.out'
-      })
-    })
-  })
-}
+  // 等待DOM更新后初始化动画
+  await nextTick();
+  initPageAnimations();
+});
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-  window.removeEventListener('wheel', handleWheel)
-  
+  window.removeEventListener('keydown', handleKeyDown);
+  window.removeEventListener('wheel', handleWheel);
+
   // 清理ScrollTrigger
-  ScrollTrigger.getAll().forEach(trigger => trigger.kill())
-})
+  cleanupScrollTriggers();
+});
 </script>
+
+<style scoped>
+/* 组件样式导入 */
+@import '@/assets/styles/components/surfaces.css';
+@import '@/assets/styles/components/buttons.css';
+@import '@/assets/styles/components/article-cards.css';
+@import '@/assets/styles/components/effects.css';
+</style>

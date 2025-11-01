@@ -79,6 +79,7 @@ export default {
     require('daisyui'),
   ],
   daisyui: {
+    logs: false, // 禁用daisyUI的日志输出
     themes: [
       {
         academic: {

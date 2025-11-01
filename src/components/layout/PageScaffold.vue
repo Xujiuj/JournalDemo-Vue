@@ -105,9 +105,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-@import '@/assets/css/background.css';
-</style>
-<style>
-/* 流星特效样式需要全局作用域 */
-@import '@/assets/css/effects.css';
+/* 组件样式导入 */
+@import '@/assets/styles/components/effects.css';
 </style>

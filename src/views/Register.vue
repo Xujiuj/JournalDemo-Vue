@@ -92,7 +92,7 @@
                 <!-- Phone -->
                 <div>
                   <label class="form-label">Phone Number</label>
-                  <input v-model="formData.userPhone" type="tel" class="form-control, form-input" placeholder="+1 234 567 8900" />
+                  <input v-model="formData.userPhone" type="tel" class="form-control form-input" placeholder="+1 234 567 8900" />
                 </div>
               </div>
             </div>
@@ -125,7 +125,7 @@
                 <!-- Title -->
                 <div>
                   <label class="form-label">Academic Title</label>
-                  <select v-model="formData.userTitle" class="select cursor-pointer bg-slate-800 border border-slate-600 top-1/2">
+                  <select v-model="formData.userTitle" class="form-control form-input">
                     <option value="">Please select</option>
                     <option value="Professor">Professor</option>
                     <option value="Associate Professor">Associate Professor</option>
@@ -300,7 +300,7 @@
                 <!-- State/Province -->
                 <div>
                   <label class="form-label">State/Province</label>
-                  <select v-model="formData.userState" @change="onStateChange" :disabled="!selectedCountryCode" class="form-input select cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                  <select v-model="formData.userState" @change="onStateChange" :disabled="!selectedCountryCode" class="form-control form-input">
                     <option value="">Select state/province</option>
                     <option v-for="state in availableStates" :key="state.isoCode" :value="state.name">
                       {{ state.name }}
@@ -312,7 +312,7 @@
                 <!-- City -->
                 <div>
                   <label class="form-label">City</label>
-                  <select v-model="formData.userCity" :disabled="!selectedStateCode" class="select cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:font-white form-input">
+                  <select v-model="formData.userCity" :disabled="!selectedStateCode" class="form-control form-input">
                     <option value="">Select city</option>
                     <option v-for="city in availableCities" :key="city.name" :value="city.name">
                       {{ city.name }}
@@ -775,7 +775,8 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
-@import '../assets/css/forms.css';
+/* 组件样式导入 */
+@import '@/assets/styles/components/forms.css';
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

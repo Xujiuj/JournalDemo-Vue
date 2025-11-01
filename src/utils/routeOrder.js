@@ -5,34 +5,42 @@
 
 // 获取路由的menuId（优先级：meta.menuId > 从store获取对应路径的menuId）
 function getRouteMenuId(route, store) {
-  if (!route) return null
+  if (!route) return null;
 
   // 优先从meta中获取menuId
   if (route.meta && route.meta.menuId) {
-    return route.meta.menuId
+    return route.meta.menuId;
   }
 
   // 如果store可用，尝试从菜单列表中查找对应路径的menuId
   if (store) {
     try {
-      const menuList = store.getters['sysInfo/getMenuList'] || []
-      const menu = menuList.find(item => item.menuPath === route.path)
+      // 支持Pinia store (有getMenuList属性) 或 Vuex store (有getters属性)
+      let menuList = [];
+      if (store.getMenuList) {
+        // Pinia store
+        menuList = store.getMenuList || [];
+      } else if (store.getters && store.getters['sysInfo/getMenuList']) {
+        // Vuex store
+        menuList = store.getters['sysInfo/getMenuList'] || [];
+      }
+      const menu = menuList.find((item) => item.menuPath === route.path);
       if (menu && menu.menuId) {
-        return menu.menuId
+        return menu.menuId;
       }
     } catch (e) {
       // 静默处理错误
     }
   }
 
-  return null
+  return null;
 }
 
 /**
  * 判断路由切换方向
  * @param {Object} from - 源路由
  * @param {Object} to - 目标路由
- * @param {Object} store - Vuex store实例（可选）
+ * @param {Object} store - Pinia store实例或Vuex store实例（可选）
  * @returns {boolean} true表示前进（目标menuId更大，从左滑入），false表示后退（目标menuId更小，从右滑入）
  */
 export function isForward(from, to, store = null) {

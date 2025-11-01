@@ -2,30 +2,15 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* Foundations */
+/* Foundations - 基础样式，所有页面都需要 */
 @import './foundations/tokens.css';
 @import './foundations/base.css';
 @import './foundations/typography.css';
 @import './foundations/layout.css';
+@import './foundations/background.css';
 
-/* Component Library */
-@import './components/surfaces.css';
-@import './components/buttons.css';
-@import './components/forms.css';
-@import './components/navigation.css';
-@import './components/feedback.css';
-@import './components/article-cards.css';
-@import './components/footer.css';
-
-/* Utilities */
+/* Utilities - 工具类，所有页面都需要 */
 @import './utilities/helpers.css';
+@import './utilities/text-clarity.css';
 
-/* Page Level Enhancements */
-@import '../css/background.css';
-@import '../css/effects.css';
-@import './pages/home.css';
-@import './pages/articles.css';
-@import './pages/article-details.css';
-@import './pages/submit.css';
-@import './pages/notices.css';
-@import './pages/contact.css';
+/* 组件样式不再全局导入，由各页面按需导入 */

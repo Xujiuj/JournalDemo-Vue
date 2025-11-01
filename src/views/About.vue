@@ -132,14 +132,14 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { editorialApi } from '../api'
-import { useStore } from 'vuex'
-import PageScaffold from '@/components/layout/PageScaffold.vue'
+import { editorialApi } from '../api';
+import { useSysInfoStore } from '@/stores';
+import PageScaffold from '@/components/layout/PageScaffold.vue';
 
-const store = useStore()
+const sysInfoStore = useSysInfoStore();
 
-// 从 Vuex 获取系统信息
-const branding = computed(() => store.getters['sysInfo/brandingInfo'])
+// 从 Pinia store 获取系统信息
+const branding = computed(() => sysInfoStore.brandingInfo);
 const displayName = computed(() => branding.value.name)
 const displayIssn = computed(() => branding.value.issn)
 const displayImpactFactor = computed(() => branding.value.impactFactor)
@@ -230,3 +230,8 @@ onMounted(() => {
   loadData()
 })
 </script>
+
+<style scoped>
+/* 组件样式导入 */
+@import '@/assets/styles/components/surfaces.css';
+</style>

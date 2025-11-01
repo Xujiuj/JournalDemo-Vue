@@ -1,13 +1,21 @@
 <template>
   <PageScaffold :meteor-count="25" background-type="dark">
-    <section class="contact-page min-h-screen bg-gradient-to-b from-slate-900 via-blue-900 to-indigo-900 text-white">
-      <div class="container mx-auto px-4 py-16 space-y-12">
-        <header class="text-center space-y-3">
-          <h1 class="text-3xl md:text-4xl font-serif font-bold text-white leading-tight">Contact Us</h1>
-          <p class="text-slate-300 max-w-2xl mx-auto">
-          Get in touch with our editorial team. We're here to help you with your research journey.
-        </p>
-        </header>
+    <div class="contact min-h-screen bg-gradient-to-b from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      <div class="container relative z-10 mx-auto px-4 py-16">
+        <!-- Page Header -->
+        <section class="relative z-10 py-8 md:py-12">
+          <div class="text-center">
+            <h1 class="text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight font-serif mb-6 animate-fade-in drop-shadow-2xl">
+              Contact Us
+            </h1>
+            <p class="text-lg lg:text-xl text-slate-100 leading-relaxed mb-8 animate-slide-up drop-shadow-lg">
+              Get in touch with our editorial team. We're here to help you with your research journey.
+            </p>
+          </div>
+        </section>
+
+        <!-- Contact Content -->
+        <section class="relative z-10 py-8 space-y-12">
 
         <div class="grid gap-8 lg:grid-cols-2">
           <article class="rounded-2xl border border-slate-700/70 bg-slate-900/70 p-6 md:p-8 shadow-lg space-y-6">
@@ -104,10 +112,11 @@
               </form>
           </article>
         </div>
+        </section>
 
         <section class="rounded-2xl border border-slate-700/70 bg-slate-900/70 p-6 md:p-8 shadow-lg space-y-6">
           <div class="text-center space-y-2">
-            <h2 class="text-2xl font-serif font-semibold">Frequently Asked Questions</h2>
+            <h2 class="text-2xl font-serif font-semibold text-white">Frequently Asked Questions</h2>
             <p class="text-slate-300">Find answers to common questions about our submission process.</p>
             </div>
 
@@ -135,21 +144,21 @@
             </article>
                   </div>
         </section>
-                </div>
-    </section>
+      </div>
+    </div>
   </PageScaffold>
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
-import { contactFaqApi } from '@/api'
-import { useStore } from 'vuex'
-import PageScaffold from '@/components/layout/PageScaffold.vue'
+import { ref, reactive, computed, onMounted } from 'vue';
+import { contactFaqApi } from '@/api';
+import { useSysInfoStore } from '@/stores';
+import PageScaffold from '@/components/layout/PageScaffold.vue';
 
-const store = useStore()
-const branding = computed(() => store.getters['sysInfo/brandingInfo'])
+const sysInfoStore = useSysInfoStore();
+const branding = computed(() => sysInfoStore.brandingInfo);
 
-// 从 Vuex 获取系统信息
+// 从 Pinia store 获取系统信息
 const displayAddress = computed(() => branding.value.address)
 const displayEmail = computed(() => branding.value.email)
 const displayPhone = computed(() => branding.value.phone)
@@ -261,6 +270,8 @@ onMounted(() => {
 })
 </script>
 
-<style>
-@import "../assets/css/forms.css";
+<style scoped>
+/* 组件样式导入 */
+@import '@/assets/styles/components/forms.css';
+@import '@/assets/styles/components/feedback.css';
 </style>

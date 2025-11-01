@@ -70,14 +70,14 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+import { computed } from 'vue';
+import { useSysInfoStore } from '@/stores';
 
-const store = useStore()
+const sysInfoStore = useSysInfoStore();
 
-// 从 Vuex 获取系统信息和菜单
-const branding = computed(() => store.getters['sysInfo/brandingInfo'])
-const menuList = computed(() => store.getters['sysInfo/getMenuList'] || [])
+// 从 Pinia store 获取系统信息和菜单
+const branding = computed(() => sysInfoStore.brandingInfo);
+const menuList = computed(() => sysInfoStore.getMenuList || []);
 const currentYear = computed(() => new Date().getFullYear())
 const displayShortName = computed(() => branding.value.shortName)
 const displayMission = computed(() => branding.value.mission)
@@ -91,3 +91,8 @@ const quickLinks = computed(() =>
   )
 )
 </script>
+
+<style scoped>
+/* 组件样式导入 */
+@import '@/assets/styles/components/footer.css';
+</style>

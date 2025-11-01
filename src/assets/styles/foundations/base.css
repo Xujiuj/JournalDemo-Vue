@@ -20,6 +20,8 @@ body {
   background-color: rgb(248, 250, 252);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: always;
   transition: color var(--transition-base), background-color var(--transition-base);
   opacity: 1;
 }

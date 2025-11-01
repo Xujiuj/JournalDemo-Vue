@@ -1,16 +1,18 @@
 <template>
   <PageScaffold :show-progress="true" :meteor-count="25" background-type="dark">
     <div class="submit min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
-      <div class="container relative z-10">
+      <div class="container relative z-10 mx-auto px-4 py-16">
         <!-- Page Header -->
-        <div class="relative z-10 py-12">
-          <div class="container mx-auto px-4">
-            <div class="text-center">
-              <h1 class="text-4xl lg:text-5xl font-bold text-white leading-tight font-serif mb-4">Submit Paper</h1>
-              <p class="text-lg text-slate-100">Submit your research paper for publication consideration</p>
-            </div>
+        <section class="relative z-10 py-8 md:py-12">
+          <div class="text-center">
+            <h1 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight font-serif mb-6 animate-fade-in drop-shadow-2xl">
+              Submit Paper
+            </h1>
+            <p class="text-lg lg:text-xl text-slate-100 leading-relaxed mb-8 animate-slide-up drop-shadow-lg">
+              Submit your research paper for publication consideration
+            </p>
           </div>
-        </div>
+        </section>
 
         <!-- Submission Form -->
         <div class="relative z-10 pb-20">
@@ -1105,6 +1107,10 @@ const scrollToFirstError = () => {
   }
 }
 </script>
-<style>
-@import "../assets/css/forms.css";
+<style scoped>
+/* 组件样式导入 */
+@import '@/assets/styles/components/forms.css';
+@import '@/assets/styles/components/buttons.css';
+@import '@/assets/styles/components/surfaces.css';
+@import '@/assets/styles/components/feedback.css';
 </style>

@@ -404,3 +404,10 @@ onMounted(() => {
   loadArticles()
 })
 </script>
+
+<style scoped>
+/* 组件样式导入 */
+@import '@/assets/styles/components/article-cards.css';
+@import '@/assets/styles/components/forms.css';
+@import '@/assets/styles/components/search-box.css';
+</style>

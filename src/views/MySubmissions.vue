@@ -39,13 +39,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useStore } from 'vuex'
-import { articleApi } from '@/api'
-import PageScaffold from '@/components/layout/PageScaffold.vue'
+import { ref, onMounted, computed } from 'vue';
+import { useUserStore } from '@/stores';
+import { articleApi } from '@/api';
+import PageScaffold from '@/components/layout/PageScaffold.vue';
 
-const store = useStore()
-const user = computed(() => store.getters['user/getUserInfo'])
+const userStore = useUserStore();
+const user = computed(() => userStore.getUserInfo);
 
 const loading = ref(false)
 const submissions = ref([])
@@ -81,3 +81,9 @@ const loadSubmissions = async () => {
 
 onMounted(loadSubmissions)
 </script>
+
+<style scoped>
+/* 组件样式导入 */
+@import '@/assets/styles/components/article-cards.css';
+@import '@/assets/styles/components/forms.css';
+</style>

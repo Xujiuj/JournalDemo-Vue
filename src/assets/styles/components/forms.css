@@ -1,234 +1,337 @@
-/* Form System */
-.form-container {
-  @apply space-y-8;
-}
+/**
+ * 统一表单组件样式
+ * 所有表单相关组件使用统一的样式类
+ */
 
-.form-section {
-  @apply surface-card space-y-6;
-}
-
-.form-group {
-  @apply space-y-2;
-}
-
+/* ========== Label 标签 ========== */
 .form-label,
 label.form-label {
   display: block;
   font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--color-neutral-700);
-  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  color: #ffffff !important; /* 统一白色 */
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  /* 文字清晰度优化 */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 600;
 }
 
 .dark .form-label,
 .dark label.form-label {
-  color: var(--color-neutral-200);
+  color: #ffffff !important; /* 深色主题下也是白色 */
 }
 
-.form-label-required::after,
-label.form-label-required::after {
-  content: ' *';
-  color: var(--color-danger);
+/* Label 中的必填标记 */
+.form-label .text-red-400,
+.form-label span.text-red-400 {
+  color: #f87171 !important;
 }
 
+/* ========== 输入框（Input, Textarea, Select） ========== */
+.form-control,
 .form-input,
-.form-textarea,
-.form-select {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+textarea,
+select.form-input,
+select.form-control {
   width: 100%;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  background-color: rgba(255, 255, 255, 0.95);
-  color: var(--color-neutral-800);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(100, 116, 139, 0.4); /* slate-500 with opacity */
+  background-color: rgba(30, 41, 59, 0.98) !important; /* slate-800, 提高不透明度以提高清晰度 */
+  color: #ffffff !important; /* 输入文字颜色为白色 */
   padding: 0.75rem 1rem;
   font-size: 1rem;
-  transition: border-color var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
+  line-height: 1.5;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  /* 文字清晰度优化 */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
 }
 
+/* Placeholder 文字颜色 */
+.form-control::placeholder,
+.form-input::placeholder,
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="number"]::placeholder,
+input[type="search"]::placeholder,
+textarea::placeholder {
+  color: rgba(148, 163, 184, 0.7) !important; /* slate-400 with opacity */
+  opacity: 1;
+}
+
+/* Focus 状态 */
+.form-control:focus,
 .form-input:focus,
-.form-textarea:focus,
-.form-select:focus {
-  border-color: rgba(14, 165, 233, 0.6);
-  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
-  outline: none;
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+textarea:focus,
+select.form-input:focus,
+select.form-control:focus {
+  border-color: rgba(245, 158, 11, 0.6) !important; /* amber-500 with opacity */
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15) !important;
+  color: #ffffff !important;
 }
 
-.dark .form-input,
-.dark .form-textarea,
-.dark .form-select {
-  background-color: rgba(15, 23, 42, 0.85);
-  border-color: rgba(148, 163, 184, 0.2);
-  color: var(--color-neutral-100);
+/* Disabled 状态 */
+.form-control:disabled,
+.form-input:disabled,
+input[type="text"]:disabled,
+input[type="email"]:disabled,
+input[type="password"]:disabled,
+input[type="tel"]:disabled,
+textarea:disabled,
+select.form-input:disabled,
+select.form-control:disabled,
+select:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  background-color: rgba(15, 23, 42, 0.6) !important;
+  border-color: rgba(100, 116, 139, 0.3) !important;
+  color: rgba(148, 163, 184, 0.6) !important;
 }
 
-.form-textarea {
+/* ========== Textarea 特殊样式 ========== */
+.form-control[type="textarea"],
+textarea.form-control,
+textarea {
   resize: vertical;
-  min-height: 160px;
+  min-height: 120px;
+  font-family: inherit;
 }
 
-.form-select {
+/* ========== Select 下拉框 ========== */
+select.form-input,
+select.form-control,
+select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23cbd5e1' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   background-size: 16px;
   padding-right: 3rem;
+  cursor: pointer;
 }
 
-.form-input-error,
-.form-textarea-error,
-.form-select-error {
-  border-color: rgba(239, 68, 68, 0.65);
-  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
+select.form-input:hover,
+select.form-control:hover,
+select:hover {
+  border-color: rgba(148, 163, 184, 0.6);
 }
 
-.form-input:disabled,
-.form-textarea:disabled,
-.form-select:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-  background: rgba(148, 163, 184, 0.1);
+/* Select option 样式 */
+select.form-input option,
+select.form-control option,
+select option {
+  background-color: rgba(30, 41, 59, 0.95);
+  color: #ffffff;
+  padding: 0.5rem;
 }
 
-.form-char-count,
+/* ========== Helper Text 提示文字 ========== */
 .form-help {
-  text-align: right;
+  display: block;
   font-size: 0.75rem;
-  color: var(--color-neutral-500);
+  color: rgba(148, 163, 184, 0.8) !important; /* slate-400 with opacity */
+  margin-top: 0.375rem;
+  line-height: 1.4;
 }
 
-.dark .form-char-count,
 .dark .form-help {
-  color: var(--color-neutral-400);
+  color: rgba(148, 163, 184, 0.8) !important;
 }
 
-.form-error {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-  color: var(--color-danger);
+/* 错误提示文字 */
+.form-help.field-hint-warning,
+.form-help.field-error {
+  color: #f87171 !important; /* red-400 */
 }
 
-.form-success {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-  color: var(--color-success);
+/* ========== 错误状态 ========== */
+.form-control.input-warning,
+.form-input.input-warning,
+input.input-warning,
+textarea.input-warning,
+select.input-warning {
+  border-color: rgba(239, 68, 68, 0.7) !important; /* red-500 */
+  background-color: rgba(30, 41, 59, 0.9) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
 }
 
-.form-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  justify-content: flex-end;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(148, 163, 184, 0.2);
+.form-control.input-warning:focus,
+.form-input.input-warning:focus,
+input.input-warning:focus,
+textarea.input-warning:focus,
+select.input-warning:focus {
+  border-color: rgba(239, 68, 68, 0.9) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25) !important;
 }
 
-.form-grid-2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: clamp(1.25rem, 3vw, 2rem);
-}
-
-.form-grid-3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: clamp(1.25rem, 3vw, 2rem);
-}
-
-.form-checkbox-group,
-.form-radio-group {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  background: rgba(248, 250, 252, 0.75);
-  padding: 0.9rem 1.1rem;
-  transition: border-color var(--transition-base), background var(--transition-base);
-}
-
-.form-checkbox-group:hover,
-.form-radio-group:hover {
-  border-color: rgba(14, 165, 233, 0.4);
-  background: rgba(14, 165, 233, 0.08);
-}
-
-.dark .form-checkbox-group,
-.dark .form-radio-group {
-  background: rgba(15, 23, 42, 0.75);
-  border-color: rgba(148, 163, 184, 0.25);
-}
-
-.form-checkbox,
-.form-radio {
-  width: 1.15rem;
-  height: 1.15rem;
-  border-radius: 0.35rem;
-  border: 1px solid rgba(148, 163, 184, 0.55);
-  background: rgba(255, 255, 255, 0.95);
+/* ========== Checkbox 和 Radio ========== */
+.checkbox,
+input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  border: 2px solid rgba(148, 163, 184, 0.5);
+  background-color: rgba(30, 41, 59, 0.8);
   appearance: none;
-  display: inline-grid;
-  place-content: center;
-  transition: border-color var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
-}
-
-.form-checkbox:checked,
-.form-radio:checked {
-  border-color: rgba(14, 165, 233, 0.75);
-  background: linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-secondary));
-  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
-}
-
-.form-radio {
-  border-radius: 999px;
-}
-
-.form-checkbox:checked::after,
-.form-radio:checked::after {
-  content: '';
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: inherit;
-  background: #ffffff;
-}
-
-.form-dropdown {
+  cursor: pointer;
+  transition: all 0.3s ease;
   position: relative;
 }
 
-.form-dropdown-trigger {
-  @apply form-input flex items-center justify-between;
-  min-height: 3rem;
+.checkbox:checked,
+input[type="checkbox"]:checked {
+  background-color: rgba(245, 158, 11, 0.8);
+  border-color: rgba(245, 158, 11, 1);
 }
 
-.form-dropdown-menu {
+.checkbox:checked::after,
+input[type="checkbox"]:checked::after {
+  content: '';
   position: absolute;
-  z-index: 40;
-  margin-top: 0.75rem;
-  width: 100%;
-  max-height: 18rem;
-  overflow-y: auto;
-  background: rgba(255, 255, 255, 0.98);
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  box-shadow: var(--shadow-md);
+  left: 50%;
+  top: 50%;
+  width: 0.375rem;
+  height: 0.625rem;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: translate(-50%, -60%) rotate(45deg);
 }
 
-.dark .form-dropdown-menu {
-  background: rgba(15, 23, 42, 0.95);
-  border-color: rgba(148, 163, 184, 0.25);
+.radio,
+input[type="radio"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  border: 2px solid rgba(148, 163, 184, 0.5);
+  background-color: rgba(30, 41, 59, 0.8);
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* Compatibility */
-.submit label,
-.submit .form-group label,
-label {
-  @apply form-label;
+.radio:checked,
+input[type="radio"]:checked {
+  background-color: rgba(245, 158, 11, 0.8);
+  border-color: rgba(245, 158, 11, 1);
 }
 
+.radio:checked::after,
+input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background-color: #ffffff;
+  transform: translate(-50%, -50%);
+}
+
+/* ========== 表单分组 ========== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-section {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ========== 兼容性处理 ========== */
+/* Login 页面使用的 auth-label */
 .auth-label {
-  color: #cbd5e1;
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+/* 确保所有 label 都是白色（排除 article-details 页面） */
+:not(.article-details) label {
+  color: #ffffff !important;
+}
+
+/* 强制覆盖所有内联样式 - 确保统一性 */
+/* Register, Contact, Login, Submit 等页面（排除 article-details，保持原样） */
+.register label,
+.contact label,
+.login label,
+.submit label,
+:not(.article-details) form label {
+  color: #ffffff !important;
+}
+
+/* 所有表单输入元素（排除 article-details） */
+.register input,
+.register textarea,
+.register select,
+.contact input,
+.contact textarea,
+.contact select,
+.login input,
+.login textarea,
+.login select,
+.submit input,
+.submit textarea,
+.submit select {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+  border-color: rgba(100, 116, 139, 0.4) !important;
+  color: #ffffff !important;
+}
+
+.register input::placeholder,
+.register textarea::placeholder,
+.contact input::placeholder,
+.contact textarea::placeholder,
+.login input::placeholder,
+.login textarea::placeholder,
+.submit input::placeholder,
+.submit textarea::placeholder {
+  color: rgba(148, 163, 184, 0.7) !important;
+}
+
+.register input:focus,
+.register textarea:focus,
+.register select:focus,
+.contact input:focus,
+.contact textarea:focus,
+.contact select:focus,
+.login input:focus,
+.login textarea:focus,
+.login select:focus,
+.submit input:focus,
+.submit textarea:focus,
+.submit select:focus {
+  border-color: rgba(245, 158, 11, 0.6) !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15) !important;
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  color: #ffffff !important;
 }
