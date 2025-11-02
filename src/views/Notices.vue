@@ -136,7 +136,7 @@ const loadNotices = async () => {
         noticeId: 1,
         noticeTitle: 'Welcome to the Journal Portal',
         noticeContent: 'We are pleased to announce the launch of our new journal portal.',
-        noticeType: 'ANNOUNCEMENT',
+        noticeType: 'announcement',
         noticePriority: 'NORMAL',
         noticePublishDate: new Date().toISOString(),
         noticeViews: 50
@@ -145,7 +145,7 @@ const loadNotices = async () => {
         noticeId: 2,
         noticeTitle: 'Call for Papers - Special Issue',
         noticeContent: 'We are now accepting submissions for our special issue on AI and Machine Learning.',
-        noticeType: 'CALL_FOR_PAPERS',
+        noticeType: 'call_for_papers',
         noticePriority: 'HIGH',
         noticePublishDate: new Date().toISOString(),
         noticeViews: 120
@@ -154,7 +154,7 @@ const loadNotices = async () => {
         noticeId: 3,
         noticeTitle: 'International Conference 2024',
         noticeContent: 'Join us for the annual international conference in Paris this summer.',
-        noticeType: 'CONFERENCE',
+        noticeType: 'conference',
         noticePriority: 'HIGH',
         noticePublishDate: new Date().toISOString(),
         noticeViews: 89
@@ -163,7 +163,7 @@ const loadNotices = async () => {
         noticeId: 4,
         noticeTitle: 'Submission Deadline Reminder',
         noticeContent: 'Please note that the submission deadline for the next issue is approaching soon.',
-        noticeType: 'DEADLINE',
+        noticeType: 'deadline',
         noticePriority: 'URGENT',
         noticePublishDate: new Date().toISOString(),
         noticeViews: 67
@@ -172,7 +172,7 @@ const loadNotices = async () => {
         noticeId: 5,
         noticeTitle: 'System Update Complete',
         noticeContent: 'Our platform has been updated with new features and improved performance.',
-        noticeType: 'UPDATE',
+        noticeType: 'update',
         noticePriority: 'NORMAL',
         noticePublishDate: new Date().toISOString(),
         noticeViews: 34
@@ -200,25 +200,25 @@ const getNoticeTypeText = (type) => {
     .join(' ')
 }
 
-// Gradient palette by type
+// Gradient palette by type (后端返回小写，所以用小写作为key)
 const TYPE_STYLES = Object.freeze({
-  ANNOUNCEMENT: {
+  announcement: {
     badge: 'from-cyan-500 to-blue-600',
     top: 'from-cyan-400 to-blue-500'
   },
-  CALL_FOR_PAPERS: {
+  call_for_papers: {
     badge: 'from-amber-500 to-yellow-600',
     top: 'from-amber-400 to-yellow-500'
   },
-  CONFERENCE: {
+  conference: {
     badge: 'from-violet-500 to-fuchsia-600',
     top: 'from-violet-400 to-fuchsia-500'
   },
-  DEADLINE: {
+  deadline: {
     badge: 'from-rose-500 to-red-600',
     top: 'from-rose-400 to-red-500'
   },
-  UPDATE: {
+  update: {
     badge: 'from-emerald-500 to-teal-600',
     top: 'from-emerald-400 to-teal-500'
   },
@@ -229,12 +229,14 @@ const TYPE_STYLES = Object.freeze({
 })
 
 const getTypeBadgeClasses = (type) => {
-  const sty = TYPE_STYLES[type] || TYPE_STYLES.DEFAULT
+  const normalizedType = type?.toLowerCase() || ''
+  const sty = TYPE_STYLES[normalizedType] || TYPE_STYLES.DEFAULT
   return `inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${sty.badge} shadow`
 }
 
 const getTopBarGradient = (type) => {
-  const sty = TYPE_STYLES[type] || TYPE_STYLES.DEFAULT
+  const normalizedType = type?.toLowerCase() || ''
+  const sty = TYPE_STYLES[normalizedType] || TYPE_STYLES.DEFAULT
   return `bg-gradient-to-r ${sty.top}`
 }
 

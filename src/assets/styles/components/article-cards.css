@@ -72,24 +72,24 @@
   transform: scaleX(1);
 }
 
-/* Notices 页面卡片根据类型动态变色 */
-.article-card[data-notice-type="ANNOUNCEMENT"]:hover::after {
+/* Notices 页面卡片根据类型动态变色 (后端返回小写) */
+.article-card[data-notice-type="announcement"]:hover::after {
   background: linear-gradient(90deg, #06b6d4, #3b82f6, #2563eb);
 }
 
-.article-card[data-notice-type="CALL_FOR_PAPERS"]:hover::after {
+.article-card[data-notice-type="call_for_papers"]:hover::after {
   background: linear-gradient(90deg, #f59e0b, #eab308, #d97706);
 }
 
-.article-card[data-notice-type="CONFERENCE"]:hover::after {
+.article-card[data-notice-type="conference"]:hover::after {
   background: linear-gradient(90deg, #8b5cf6, #a855f7, #9333ea);
 }
 
-.article-card[data-notice-type="DEADLINE"]:hover::after {
+.article-card[data-notice-type="deadline"]:hover::after {
   background: linear-gradient(90deg, #f43f5e, #ef4444, #dc2626);
 }
 
-.article-card[data-notice-type="UPDATE"]:hover::after {
+.article-card[data-notice-type="update"]:hover::after {
   background: linear-gradient(90deg, #10b981, #059669, #047857);
 }
 
