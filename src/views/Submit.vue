@@ -1,6 +1,6 @@
 <template>
   <PageScaffold :show-progress="true" :meteor-count="25" background-type="dark">
-    <div class="submit min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+    <div class="submit min-h-screen relative overflow-hidden">
       <div class="container relative z-10 mx-auto px-4 py-16">
         <!-- Page Header -->
         <section class="relative z-10 py-8 md:py-12">
@@ -60,8 +60,8 @@
                         required
                         placeholder="Enter the title of your paper"
                         maxlength="500"
-                        class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
-                        :class="[fieldErrors.title && 'border-red-500']"
+                        class="form-control"
+                        :class="[fieldErrors.title && 'input-warning']"
                       />
                       <div class="form-char-count">{{ form.title.length }}/40</div>
                       <p v-if="fieldErrors.title" class="text-sm text-red-400 mt-1">{{ fieldErrors.title }}</p>
@@ -76,8 +76,8 @@
                         rows="6"
                         placeholder="Provide a comprehensive abstract of your paper (250-300 words)"
                         maxlength="2000"
-                        class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 resize-none"
-                        :class="[fieldErrors.abstract && 'border-red-500']"
+                        class="form-control resize-none"
+                        :class="[fieldErrors.abstract && 'input-warning']"
                       ></textarea>
                       <div class="form-char-count">{{ form.abstract.length }}/2000</div>
                       <p v-if="fieldErrors.abstract" class="text-sm text-red-400 mt-1">{{ fieldErrors.abstract }}</p>
@@ -91,8 +91,8 @@
                         type="text"
                         required
                         placeholder="Enter keywords separated by commas"
-                        class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
-                        :class="[fieldErrors.keywords && 'border-red-500']"
+                        class="form-control"
+                        :class="[fieldErrors.keywords && 'input-warning']"
                       />
                       <p v-if="fieldErrors.keywords" class="text-sm text-red-400 mt-1">{{ fieldErrors.keywords }}</p>
                     </div>
@@ -100,7 +100,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div class="form-group">
                         <label for="manuscriptType" class="form-label">Manuscript Type <span class="text-red-400">*</span></label>
-                        <select id="manuscriptType" v-model="form.manuscriptType" required class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" :class="[fieldErrors.manuscriptType && 'border-red-500']">
+                        <select id="manuscriptType" v-model="form.manuscriptType" required class="form-control" :class="[fieldErrors.manuscriptType && 'input-warning']">
                           <option value="">Please select</option>
                           <option value="Article">Original research article</option>
                           <option value="Review">Review article</option>
@@ -204,8 +204,8 @@
                           min="0" 
                           required 
                           placeholder="e.g., 5200"
-                          class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
-                          :class="[fieldErrors.wordCount && 'border-red-500']"
+                          class="form-control"
+                          :class="[fieldErrors.wordCount && 'input-warning']"
                         />
                         <p v-if="fieldErrors.wordCount" class="text-sm text-red-400 mt-1">{{ fieldErrors.wordCount }}</p>
                       </div>
@@ -217,7 +217,7 @@
                           type="number" 
                           min="0" 
                           placeholder="e.g., 5"
-                          class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
+                          class="form-control"
                         />
                       </div>
                       <div class="form-group">
@@ -228,7 +228,7 @@
                           type="number" 
                           min="0" 
                           placeholder="e.g., 3"
-                          class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
+                          class="form-control"
                         />
                       </div>
                     </div>
@@ -240,7 +240,7 @@
                         v-model="form.coverLetter"
                         rows="4"
                         placeholder="Provide a brief cover letter to the editors (optional)"
-                        class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 resize-none"
+                        class="form-control resize-none"
                       ></textarea>
                     </div>
                   </div>
@@ -1108,9 +1108,6 @@ const scrollToFirstError = () => {
 }
 </script>
 <style scoped>
-/* 组件样式导入 */
-@import '@/assets/styles/components/forms.css';
-@import '@/assets/styles/components/buttons.css';
-@import '@/assets/styles/components/surfaces.css';
-@import '@/assets/styles/components/feedback.css';
+/* Submit页面专用样式 */
+@import '@/assets/styles/pages/submit.css';
 </style>

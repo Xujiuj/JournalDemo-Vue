@@ -10,8 +10,12 @@
   font-family: 'Georgia', 'Times New Roman', 'Times', serif;
   position: relative;
   overflow: visible;
-  /* 确保不受全局样式影响 */
-  isolation: isolate;
+  /* 强制白色背景，覆盖PageScaffold的背景 */
+  background: white !important;
+}
+
+.dark .article-details {
+  background: #1e293b !important;
 }
 
 /* 重置所有可能的全局样式影响 */
@@ -194,8 +198,10 @@
 }
 
 /* ========== 作者弹窗样式 ========== */
-.article-details .author-modal {
-  background: white;
+/* Teleport 到 body，需要独立样式 */
+.author-modal {
+  position: fixed !important;
+  background: white !important;
   border-radius: 0.5rem;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   width: 24rem;
@@ -203,8 +209,143 @@
   z-index: 9999;
 }
 
-.dark .article-details .author-modal {
-  background: #1e293b;
+.dark .author-modal {
+  background: #1e293b !important;
+}
+
+/* 气泡箭头 */
+.author-modal-arrow {
+  position: absolute;
+  top: -8px;
+  left: 24px;
+  width: 16px;
+  height: 16px;
+  background: white !important;
+  transform: rotate(45deg);
+  border-left: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.dark .author-modal-arrow {
+  background: #1e293b !important;
+  border-left-color: #374151;
+  border-top-color: #374151;
+}
+
+/* 作者弹窗内部文字颜色 */
+.author-modal h3 {
+  color: #6b7280 !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.dark .author-modal h3 {
+  color: #9ca3af !important;
+}
+
+.author-modal h4 {
+  color: #1f2937 !important;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.dark .author-modal h4 {
+  color: white !important;
+}
+
+.author-modal p,
+.author-modal span {
+  color: #374151 !important;
+  font-size: 0.875rem;
+}
+
+.dark .author-modal p,
+.dark .author-modal span {
+  color: #d1d5db !important;
+}
+
+.author-modal a {
+  color: #2563eb !important;
+  font-size: 0.875rem;
+}
+
+.author-modal a:hover {
+  text-decoration: underline;
+}
+
+.dark .author-modal a {
+  color: #60a5fa !important;
+}
+
+.author-modal svg {
+  color: #4b5563 !important;
+}
+
+.dark .author-modal svg {
+  color: #9ca3af !important;
+}
+
+.author-modal button {
+  border: 2px solid #2563eb;
+  color: #2563eb;
+  background: transparent;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.author-modal button:hover {
+  background: #eff6ff;
+}
+
+.dark .author-modal button {
+  border-color: #60a5fa;
+  color: #60a5fa;
+}
+
+.dark .author-modal button:hover {
+  background: rgba(96, 165, 250, 0.1);
+}
+
+.author-modal button svg {
+  color: inherit !important;
+}
+
+/* 分隔线 */
+.author-modal hr {
+  border: 0;
+  border-top: 1px solid #e5e7eb;
+  margin: 1rem 0;
+}
+
+.dark .author-modal hr {
+  border-top-color: #374151;
+}
+
+/* 关闭按钮 */
+.author-modal > button[class*="absolute"] {
+  color: #9ca3af;
+}
+
+.author-modal > button[class*="absolute"]:hover {
+  color: #6b7280;
+}
+
+.dark .author-modal > button[class*="absolute"] {
+  color: #9ca3af;
+}
+
+.dark .author-modal > button[class*="absolute"]:hover {
+  color: #d1d5db;
 }
 
 /* ========== 右侧导航栏样式 ========== */
@@ -214,6 +355,47 @@
   align-self: flex-start;
   top: calc(136px + 96px);
   margin-top: calc(400px - 136px - 96px);
+}
+
+/* 右侧悬挂卡片背景 */
+.article-details .sticky-section > div {
+  background: white !important;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+}
+
+.dark .article-details .sticky-section > div {
+  background: #1e293b !important;
+  border-color: #374151;
+}
+
+.article-details .sticky-section h3 {
+  color: #1f2937 !important;
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.dark .article-details .sticky-section h3 {
+  color: white !important;
+}
+
+.article-details .sticky-section nav a {
+  display: block;
+  font-size: 0.875rem;
+  color: #2563eb !important;
+  padding: 0.25rem 0;
+  white-space: nowrap;
+}
+
+.article-details .sticky-section nav a:hover {
+  text-decoration: underline;
+}
+
+.dark .article-details .sticky-section nav a {
+  color: #60a5fa !important;
 }
 
 .article-details > div.container {

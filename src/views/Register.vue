@@ -1,32 +1,15 @@
 <template>
   <PageScaffold :meteor-count="25" background-type="dark">
     <div class="container mx-auto px-4 py-12 relative z-10">
-      <!-- Breadcrumb Navigation -->
-      <nav class="mb-8 pt-4" aria-label="Breadcrumb">
-        <ol class="flex items-center space-x-2 text-sm">
-          <li>
-            <router-link 
-              to="/" 
-              class="text-slate-400 hover:text-white transition-colors duration-300 flex items-center"
-            >
-              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-              </svg>
-              Home
-            </router-link>
-          </li>
-          <li class="text-slate-500">/</li>
-          <li class="text-white">Register</li>
-        </ol>
-      </nav>
-
       <!-- Registration Form Container -->
       <div class="max-w-4xl mx-auto">
-        <div class="bg-gradient-to-br from-slate-900/95 via-blue-900/95 to-indigo-900/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-cyan-500/30">
+        <div class="bg-gradient-to-br from-slate-900/90 via-slate-800/90 to-slate-900/90 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-amber-500/40">
           <!-- Title -->
-          <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-white mb-2">User Registration</h1>
-            <p class="text-slate-300">Create Your Account</p>
+          <div class="text-center mb-10">
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent mb-3">
+              Create Account
+            </h1>
+            <p class="text-slate-400 text-lg">Join our research community</p>
           </div>
 
           <!-- Registration Form -->
@@ -42,7 +25,7 @@
             </div>
 
             <!-- Basic Information -->
-            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+            <div class="bg-slate-900/60 rounded-xl p-6 border border-slate-600/50">
               <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
                 <svg class="w-6 h-6 mr-2 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -52,53 +35,139 @@
               
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Username -->
-                <div>
-                  <label class="form-label">Username <span class="text-red-400">*</span></label>
-                  <input v-model="formData.userName" data-field="userName" type="text" required :class="['form-control', fieldErrors.userName && 'input-warning']" placeholder="Enter username" />
-                  <p class="form-help">3-20 characters</p>
-                  <p v-if="fieldErrors.userName" class="form-help field-hint-warning">{{ fieldErrors.userName }}</p>
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Username <span class="text-red-400">*</span></label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <input 
+                      v-model="formData.userName" 
+                      data-field="userName" 
+                      type="text" 
+                      required 
+                      :class="['relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all', fieldErrors.userName ? 'border-red-500 focus:border-red-500 ring-2 ring-red-500/30 animate-shake' : 'border-slate-600']"
+                      placeholder="Enter username"
+                    />
+                  </div>
+                  <p v-if="fieldErrors.userName" class="mt-2 text-sm text-red-400 flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86A2 2 0 0021 17.07L13.41 4.93a2 2 0 00-3.42 0L3 17.07A2 2 0 005.07 19z"/>
+                    </svg>
+                    {{ fieldErrors.userName }}
+                  </p>
+                  <p v-else class="mt-1 text-xs text-slate-400">3-20 characters</p>
                 </div>
 
                 <!-- Email -->
-                <div>
-                  <label class="form-label">Email <span class="text-red-400">*</span></label>
-                  <input v-model="formData.userEmail" data-field="userEmail" type="text" autocomplete="email" required :class="['form-control', fieldErrors.userEmail && 'input-warning']" placeholder="your.email@example.com" />
-                  <p class="form-help">For notifications and password recovery</p>
-                  <p v-if="fieldErrors.userEmail" class="form-help field-hint-warning">{{ fieldErrors.userEmail }}</p>
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Email <span class="text-red-400">*</span></label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <input 
+                      v-model="formData.userEmail" 
+                      data-field="userEmail" 
+                      type="text" 
+                      autocomplete="email" 
+                      required 
+                      :class="['relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all', fieldErrors.userEmail ? 'border-red-500 focus:border-red-500 ring-2 ring-red-500/30 animate-shake' : 'border-slate-600']"
+                      placeholder="your.email@example.com"
+                    />
+                  </div>
+                  <p v-if="fieldErrors.userEmail" class="mt-2 text-sm text-red-400 flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86A2 2 0 0021 17.07L13.41 4.93a2 2 0 00-3.42 0L3 17.07A2 2 0 005.07 19z"/>
+                    </svg>
+                    {{ fieldErrors.userEmail }}
+                  </p>
+                  <p v-else class="mt-1 text-xs text-slate-400">For notifications and password recovery</p>
                 </div>
 
                 <!-- Password -->
-                <div>
-                  <label class="form-label">Password <span class="text-red-400">*</span></label>
-                  <input v-model="formData.userPassword" data-field="userPassword" type="password" autocomplete="new-password" required :class="['form-control', 'form-input', fieldErrors.userPassword && 'input-warning']" placeholder="At least 8 characters" />
-                  <p class="form-help">Include letters and numbers</p>
-                  <p v-if="fieldErrors.userPassword" class="form-help field-hint-warning">{{ fieldErrors.userPassword }}</p>
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Password <span class="text-red-400">*</span></label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <input 
+                      v-model="formData.userPassword" 
+                      data-field="userPassword" 
+                      type="password" 
+                      autocomplete="new-password" 
+                      required 
+                      :class="['relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all', fieldErrors.userPassword ? 'border-red-500 focus:border-red-500 ring-2 ring-red-500/30 animate-shake' : 'border-slate-600']"
+                      placeholder="At least 8 characters"
+                    />
+                  </div>
+                  <p v-if="fieldErrors.userPassword" class="mt-2 text-sm text-red-400 flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86A2 2 0 0021 17.07L13.41 4.93a2 2 0 00-3.42 0L3 17.07A2 2 0 005.07 19z"/>
+                    </svg>
+                    {{ fieldErrors.userPassword }}
+                  </p>
+                  <p v-else class="mt-1 text-xs text-slate-400">Include letters and numbers</p>
                 </div>
 
                 <!-- Confirm Password -->
-                <div>
-                  <label class="form-label">Confirm Password <span class="text-red-400">*</span></label>
-                  <input v-model="formData.confirmPassword" data-field="confirmPassword" type="password" autocomplete="new-password" required :class="['form-control', 'form-input', fieldErrors.confirmPassword && 'input-warning']" placeholder="Re-enter password" />
-                  <p v-if="fieldErrors.confirmPassword" class="form-help field-hint-warning">{{ fieldErrors.confirmPassword }}</p>
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Confirm Password <span class="text-red-400">*</span></label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <input 
+                      v-model="formData.confirmPassword" 
+                      data-field="confirmPassword" 
+                      type="password" 
+                      autocomplete="new-password" 
+                      required 
+                      :class="['relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all', fieldErrors.confirmPassword ? 'border-red-500 focus:border-red-500 ring-2 ring-red-500/30 animate-shake' : 'border-slate-600']"
+                      placeholder="Re-enter password"
+                    />
+                  </div>
+                  <p v-if="fieldErrors.confirmPassword" class="mt-2 text-sm text-red-400 flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86A2 2 0 0021 17.07L13.41 4.93a2 2 0 00-3.42 0L3 17.07A2 2 0 005.07 19z"/>
+                    </svg>
+                    {{ fieldErrors.confirmPassword }}
+                  </p>
                 </div>
 
                 <!-- Real Name -->
-                <div>
-                  <label class="form-label">Full Name <span class="text-red-400">*</span></label>
-                  <input v-model="formData.userRealName" data-field="userRealName" type="text" required :class="['form-control', fieldErrors.userRealName && 'input-warning']" placeholder="Enter your full name" />
-                  <p v-if="fieldErrors.userRealName" class="form-help field-hint-warning">{{ fieldErrors.userRealName }}</p>
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Full Name <span class="text-red-400">*</span></label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <input 
+                      v-model="formData.userRealName" 
+                      data-field="userRealName" 
+                      type="text" 
+                      required 
+                      :class="['relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all', fieldErrors.userRealName ? 'border-red-500 focus:border-red-500 ring-2 ring-red-500/30 animate-shake' : 'border-slate-600']"
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                  <p v-if="fieldErrors.userRealName" class="mt-2 text-sm text-red-400 flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86A2 2 0 0021 17.07L13.41 4.93a2 2 0 00-3.42 0L3 17.07A2 2 0 005.07 19z"/>
+                    </svg>
+                    {{ fieldErrors.userRealName }}
+                  </p>
                 </div>
 
                 <!-- Phone -->
-                <div>
-                  <label class="form-label">Phone Number</label>
-                  <input v-model="formData.userPhone" type="tel" class="form-control form-input" placeholder="+1 234 567 8900" />
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Phone Number</label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <input 
+                      v-model="formData.userPhone" 
+                      type="tel" 
+                      :class="['relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all border-slate-600']"
+                      placeholder="+1 234 567 8900"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
             <!-- Academic Information -->
-            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+            <div class="bg-slate-900/60 rounded-xl p-6 border border-slate-600/50">
               <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
                 <svg class="w-6 h-6 mr-2 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
@@ -110,57 +179,113 @@
               
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Affiliation -->
-                <div>
-                  <label class="form-label">Affiliation <span class="text-red-400">*</span></label>
-                  <input v-model="formData.userAffiliation" data-field="userAffiliation" type="text" required :class="['form-control', fieldErrors.userAffiliation && 'input-warning']" placeholder="e.g., Harvard University" />
-                  <p v-if="fieldErrors.userAffiliation" class="form-help field-hint-warning">{{ fieldErrors.userAffiliation }}</p>
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Affiliation <span class="text-red-400">*</span></label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <input 
+                      v-model="formData.userAffiliation" 
+                      data-field="userAffiliation" 
+                      type="text" 
+                      required 
+                      :class="['relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all', fieldErrors.userAffiliation ? 'border-red-500 focus:border-red-500 ring-2 ring-red-500/30 animate-shake' : 'border-slate-600']"
+                      placeholder="e.g., Harvard University"
+                    />
+                  </div>
+                  <p v-if="fieldErrors.userAffiliation" class="mt-2 text-sm text-red-400 flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86A2 2 0 0021 17.07L13.41 4.93a2 2 0 00-3.42 0L3 17.07A2 2 0 005.07 19z"/>
+                    </svg>
+                    {{ fieldErrors.userAffiliation }}
+                  </p>
                 </div>
 
                 <!-- Department -->
-                <div>
-                  <label class="form-label">Department/Institute</label>
-                  <input v-model="formData.userDepartment" type="text" class="form-control" placeholder="e.g., Computer Science" />
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Department/Institute</label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <input 
+                      v-model="formData.userDepartment" 
+                      type="text" 
+                      :class="['relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all border-slate-600']"
+                      placeholder="e.g., Computer Science"
+                    />
+                  </div>
                 </div>
 
                 <!-- Title -->
-                <div>
-                  <label class="form-label">Academic Title</label>
-                  <select v-model="formData.userTitle" class="form-control form-input">
-                    <option value="">Please select</option>
-                    <option value="Professor">Professor</option>
-                    <option value="Associate Professor">Associate Professor</option>
-                    <option value="Lecturer">Lecturer</option>
-                    <option value="Research Fellow">Research Fellow</option>
-                    <option value="Assistant Research Fellow">Assistant Research Fellow</option>
-                    <option value="Student">Student</option>
-                    <option value="Other">Other</option>
-                  </select>
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Academic Title</label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <select 
+                      v-model="formData.userTitle" 
+                      class="relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all border-slate-600"
+                    >
+                      <option value="">Please select</option>
+                      <option value="Professor">Professor</option>
+                      <option value="Associate Professor">Associate Professor</option>
+                      <option value="Lecturer">Lecturer</option>
+                      <option value="Research Fellow">Research Fellow</option>
+                      <option value="Assistant Research Fellow">Assistant Research Fellow</option>
+                      <option value="Student">Student</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
                 </div>
 
                 <!-- Position -->
-                <div>
-                  <label class="form-label">Position</label>
-                  <input v-model="formData.userPosition" type="text" class="form-control" placeholder="e.g., Department Chair, Lab Director" />
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Position</label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <input 
+                      v-model="formData.userPosition" 
+                      type="text" 
+                      :class="['relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all border-slate-600']"
+                      placeholder="e.g., Department Chair, Lab Director"
+                    />
+                  </div>
                 </div>
 
                 <!-- ORCID -->
-                <div>
-                  <label class="form-label">ORCID</label>
-                  <input v-model="formData.userOrcid" type="text" class="form-control" placeholder="0000-0000-0000-0000" />
-                  <p class="form-help">
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">ORCID</label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <input 
+                      v-model="formData.userOrcid" 
+                      type="text" 
+                      :class="['relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all border-slate-600']"
+                      placeholder="0000-0000-0000-0000"
+                    />
+                  </div>
+                  <p class="mt-1 text-xs text-slate-400">
                     <a href="https://orcid.org/" target="_blank" class="text-amber-400 hover:underline">Get ORCID</a>
                   </p>
                 </div>
 
                 <!-- Country -->
-                <div>
-                  <label class="form-label">Country/Region <span class="text-red-400">*</span></label>
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Country/Region <span class="text-red-400">*</span></label>
                   <div class="relative country-dropdown-container">
                     <!-- Search Input -->
-                    <input v-model="countrySearch" @focus="onCountryInputFocus" @input="filterCountries" type="text" required class="form-control" placeholder="Search or select country" />
-                    <svg class="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
+                    <div class="relative group/input">
+                      <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                      <input 
+                        v-model="countrySearch" 
+                        @focus="onCountryInputFocus" 
+                        @input="filterCountries" 
+                        type="text" 
+                        required 
+                        class="relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all border-slate-600" 
+                        placeholder="Search or select country"
+                      />
+                      <svg class="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                      </svg>
+                    </div>
                     
                     <!-- Dropdown -->
                     <div 
@@ -185,8 +310,8 @@
                 </div>
 
                 <!-- Research Areas (Multi-select) -->
-                <div class="md:col-span-2">
-                  <label class="form-label">Research Areas <span class="text-red-400">*</span> <span class="text-xs text-slate-400 ml-2">(Select up to 5)</span></label>
+                <div class="md:col-span-2 form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Research Areas <span class="text-red-400">*</span> <span class="text-xs text-slate-400 ml-2">(Select up to 5)</span></label>
                   <div class="relative area-dropdown-container">
                     <div 
                       @click="showAreaDropdown = !showAreaDropdown"
@@ -265,29 +390,59 @@
                       </div>
                     </div>
                   </div>
-                  <p class="form-help">
+                  <p class="mt-1 text-xs text-slate-400">
                     {{ selectedAreas.length }} / 5 selected
                   </p>
                 </div>
 
                 <!-- Research Keywords -->
-                <div class="md:col-span-2">
-                  <label class="form-label">Research Keywords <span class="text-red-400">*</span></label>
-                  <input v-model="formData.userKeywords" data-field="userKeywords" type="text" required :class="['form-control', fieldErrors.userKeywords && 'input-warning']" placeholder="Comma separated, e.g., Deep Learning, Computer Vision, NLP" />
-                  <p v-if="fieldErrors.userKeywords" class="form-help field-hint-warning">{{ fieldErrors.userKeywords }}</p>
+                <div class="md:col-span-2 form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Research Keywords <span class="text-red-400">*</span></label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <input 
+                      v-model="formData.userKeywords" 
+                      data-field="userKeywords" 
+                      type="text" 
+                      required 
+                      :class="['relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all', fieldErrors.userKeywords ? 'border-red-500 focus:border-red-500 ring-2 ring-red-500/30 animate-shake' : 'border-slate-600']"
+                      placeholder="Comma separated, e.g., Deep Learning, Computer Vision, NLP"
+                    />
+                  </div>
+                  <p v-if="fieldErrors.userKeywords" class="mt-2 text-sm text-red-400 flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86A2 2 0 0021 17.07L13.41 4.93a2 2 0 00-3.42 0L3 17.07A2 2 0 005.07 19z"/>
+                    </svg>
+                    {{ fieldErrors.userKeywords }}
+                  </p>
                 </div>
 
                 <!-- Biography -->
-                <div class="md:col-span-2">
-                  <label class="form-label">Biography <span class="text-red-400">*</span></label>
-                  <textarea v-model="formData.userBiography" data-field="userBiography" rows="4" required :class="['form-control resize-none', fieldErrors.userBiography && 'input-warning']" placeholder="Brief introduction of your academic background and research interests..."></textarea>
-                  <p v-if="fieldErrors.userBiography" class="form-help field-hint-warning">{{ fieldErrors.userBiography }}</p>
+                <div class="md:col-span-2 form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Biography <span class="text-red-400">*</span></label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <textarea 
+                      v-model="formData.userBiography" 
+                      data-field="userBiography" 
+                      rows="4" 
+                      required 
+                      :class="['relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all resize-none', fieldErrors.userBiography ? 'border-red-500 focus:border-red-500 ring-2 ring-red-500/30 animate-shake' : 'border-slate-600']"
+                      placeholder="Brief introduction of your academic background and research interests..."
+                    ></textarea>
+                  </div>
+                  <p v-if="fieldErrors.userBiography" class="mt-2 text-sm text-red-400 flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86A2 2 0 0021 17.07L13.41 4.93a2 2 0 00-3.42 0L3 17.07A2 2 0 005.07 19z"/>
+                    </svg>
+                    {{ fieldErrors.userBiography }}
+                  </p>
                 </div>
               </div>
             </div>
 
             <!-- Address Information -->
-            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+            <div class="bg-slate-900/60 rounded-xl p-6 border border-slate-600/50">
               <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
                 <svg class="w-6 h-6 mr-2 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -298,39 +453,70 @@
               
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- State/Province -->
-                <div>
-                  <label class="form-label">State/Province</label>
-                  <select v-model="formData.userState" @change="onStateChange" :disabled="!selectedCountryCode" class="form-control form-input">
-                    <option value="">Select state/province</option>
-                    <option v-for="state in availableStates" :key="state.isoCode" :value="state.name">
-                      {{ state.name }}
-                    </option>
-                  </select>
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">State/Province</label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <select 
+                      v-model="formData.userState" 
+                      @change="onStateChange" 
+                      :disabled="!selectedCountryCode" 
+                      class="relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all border-slate-600 disabled:opacity-50"
+                    >
+                      <option value="">Select state/province</option>
+                      <option v-for="state in availableStates" :key="state.isoCode" :value="state.name">
+                        {{ state.name }}
+                      </option>
+                    </select>
+                  </div>
                   <p v-if="!selectedCountryCode" class="mt-1 text-xs text-slate-400">Please select country first</p>
                 </div>
 
                 <!-- City -->
-                <div>
-                  <label class="form-label">City</label>
-                  <select v-model="formData.userCity" :disabled="!selectedStateCode" class="form-control form-input">
-                    <option value="">Select city</option>
-                    <option v-for="city in availableCities" :key="city.name" :value="city.name">
-                      {{ city.name }}
-                    </option>
-                  </select>
-                  <p v-if="!selectedStateCode" class="form-help">Please select state/province first</p>
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">City</label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <select 
+                      v-model="formData.userCity" 
+                      :disabled="!selectedStateCode" 
+                      class="relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all border-slate-600 disabled:opacity-50"
+                    >
+                      <option value="">Select city</option>
+                      <option v-for="city in availableCities" :key="city.name" :value="city.name">
+                        {{ city.name }}
+                      </option>
+                    </select>
+                  </div>
+                  <p v-if="!selectedStateCode" class="mt-1 text-xs text-slate-400">Please select state/province first</p>
                 </div>
 
                 <!-- Postal Code -->
-                <div>
-                  <label class="form-label">Postal Code</label>
-                  <input v-model="formData.userPostalCode" type="text" class="form-control" placeholder="e.g., 94102" />
+                <div class="form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Postal Code</label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <input 
+                      v-model="formData.userPostalCode" 
+                      type="text" 
+                      class="relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all border-slate-600"
+                      placeholder="e.g., 94102"
+                    />
+                  </div>
                 </div>
 
                 <!-- Detailed Address -->
-                <div class="md:col-span-2">
-                  <label class="form-label">Detailed Address</label>
-                  <textarea v-model="formData.userAddress" rows="2" class="form-control resize-none" placeholder="Enter your detailed mailing address"></textarea>
+                <div class="md:col-span-2 form-group">
+                  <label class="auth-label block text-sm font-semibold mb-3 text-white">Detailed Address</label>
+                  <div class="relative group/input">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
+                    <textarea 
+                      v-model="formData.userAddress" 
+                      rows="2" 
+                      class="relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all resize-none border-slate-600"
+                      placeholder="Enter your detailed mailing address"
+                    ></textarea>
+                  </div>
                 </div>
               </div>
             </div>
@@ -775,8 +961,7 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
-/* 组件样式导入 */
-@import '@/assets/styles/components/forms.css';
+/* Register页面样式 */
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

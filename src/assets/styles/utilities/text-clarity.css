@@ -1,0 +1,37 @@
+/* 文本清晰度增强 */
+.text-clarity {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 文本装饰 */
+.text-accent {
+  background: linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+/* 选择文本样式 */
+::selection {
+  background: rgba(14, 165, 233, 0.3);
+  color: inherit;
+}
+
+::-moz-selection {
+  background: rgba(14, 165, 233, 0.3);
+  color: inherit;
+}
+
+.dark ::selection {
+  background: rgba(99, 102, 241, 0.4);
+  color: inherit;
+}
+
+.dark ::-moz-selection {
+  background: rgba(99, 102, 241, 0.4);
+  color: inherit;
+}
+

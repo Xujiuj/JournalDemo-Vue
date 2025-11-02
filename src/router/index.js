@@ -22,6 +22,16 @@ const baseRoutes = [
     component: resolveComponent('MySubmissions') || (() => import('@/views/MySubmissions.vue'))
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: resolveComponent('Login') || (() => import('@/views/Login.vue'))
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: resolveComponent('Register') || (() => import('@/views/Register.vue'))
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'WildcardFallback',
     component: resolveComponent('Home') || (() => import('@/views/Home.vue'))
@@ -33,15 +43,10 @@ const router = createRouter({
   routes: baseRoutes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return {
-        ...savedPosition,
-        behavior: 'smooth'
-      }
+      return savedPosition
     }
-    return {
-      top: 0,
-      behavior: 'smooth'
-    }
+    // 使用立即滚动而不是smooth，避免白屏
+    return { top: 0, behavior: 'auto' }
   }
 })
 

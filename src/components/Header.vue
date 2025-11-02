@@ -16,10 +16,10 @@
               <span v-else class="text-white text-xl font-bold font-serif">{{ brandInitial }}</span>
             </div>
             <div class="flex flex-col justify-center">
-              <div class="text-xl font-bold text-slate-800 dark:text-slate-200 leading-tight font-serif">
+              <div class="text-xl font-bold text-black leading-tight font-serif">
                 {{ displayPublisher }}
               </div>
-              <div class="text-sm text-slate-500 dark:text-slate-400 font-normal leading-tight -mt-0">
+              <div class="text-sm text-slate-600 font-normal leading-tight -mt-0">
                 ISSN: {{ displayIssn }}
               </div>
             </div>
@@ -160,8 +160,8 @@
             :key="item.menuName"
             :to="item.menuPath"
             @click="handleNavClick(item, $event)"
-            class="nav-link-gemini group relative px-5 py-3 text-slate-700 dark:text-slate-300 text-sm font-medium transition duration-300 transform origin-center hover:scale-105 hover:text-slate-900 dark:hover:text-slate-100"
-            :class="{ 'text-slate-900 dark:text-slate-100': $route.path === item.menuPath }"
+            class="nav-link-gemini group relative px-5 py-3 text-black text-sm font-medium transition duration-300 transform origin-center hover:scale-105 hover:text-black"
+            :class="{ 'text-black': $route.path === item.menuPath }"
           >
             <span class="relative z-10">{{ item.menuName }}</span>
             
@@ -219,7 +219,7 @@ const PROTECTED_ROUTES = ['/submit', '/my-submissions'];
 // 从 Pinia stores 获取系统信息和菜单
 const branding = computed(() => sysInfoStore.brandingInfo);
 const navItems = computed(() => {
-  const menus = sysInfoStore.getMenuList || [];
+  const menus = sysInfoStore.menuList || [];
   return menus
     .filter((item) => item?.menuParentId === 0 && item?.menuPath && item.menuType === 'M')
     .sort((a, b) => (a.menuOrderNum ?? 0) - (b.menuOrderNum ?? 0));
@@ -235,7 +235,7 @@ const brandInitial = computed(() => {
 // 从 Pinia stores 获取用户信息
 const currentUser = computed(() => userStore.currentUser);
 const userMenus = computed(() => {
-  const menus = sysInfoStore.getMenuList || [];
+  const menus = sysInfoStore.menuList || [];
   return menus
     .filter((item) => item?.menuParentId === 8 && item?.menuType === 'M')
     .sort((a, b) => (a.menuOrderNum ?? 0) - (b.menuOrderNum ?? 0));
@@ -457,8 +457,8 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
-/* 组件样式导入 */
+<style>
+/* Header组件样式 */
 @import '@/assets/styles/components/header.css';
 @import '@/assets/styles/components/navigation.css';
 @import '@/assets/styles/components/search-box.css';

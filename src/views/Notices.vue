@@ -17,7 +17,7 @@
       <!-- Notices List -->
         <section class="relative z-10 py-8">
           <div class="grid gap-8">
-            <article v-for="(notice, index) in notices" :key="notice.noticeId" class="group article-card animate-slide-up" :style="{ animationDelay: (index * 0.1) + 's' }">
+            <article v-for="(notice, index) in notices" :key="notice.noticeId" class="group article-card animate-slide-up" :style="{ animationDelay: (index * 0.1) + 's' }" :data-notice-type="notice.noticeType">
               <!-- 流光效果层 -->
               <div class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-150 pointer-events-none overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-r from-transparent via-amber-200/10 to-transparent dark:via-amber-200/5 transform -translate-x-full hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
@@ -134,12 +134,48 @@ const loadNotices = async () => {
     notices.value = [
       {
         noticeId: 1,
-        noticeTitle: '欢迎访问期刊门户网站',
-        noticeContent: '感谢您访问我们的期刊门户网站。我们致力于为科研工作者提供高质量的学术交流平台。',
+        noticeTitle: 'Welcome to the Journal Portal',
+        noticeContent: 'We are pleased to announce the launch of our new journal portal.',
         noticeType: 'ANNOUNCEMENT',
         noticePriority: 'NORMAL',
         noticePublishDate: new Date().toISOString(),
         noticeViews: 50
+      },
+      {
+        noticeId: 2,
+        noticeTitle: 'Call for Papers - Special Issue',
+        noticeContent: 'We are now accepting submissions for our special issue on AI and Machine Learning.',
+        noticeType: 'CALL_FOR_PAPERS',
+        noticePriority: 'HIGH',
+        noticePublishDate: new Date().toISOString(),
+        noticeViews: 120
+      },
+      {
+        noticeId: 3,
+        noticeTitle: 'International Conference 2024',
+        noticeContent: 'Join us for the annual international conference in Paris this summer.',
+        noticeType: 'CONFERENCE',
+        noticePriority: 'HIGH',
+        noticePublishDate: new Date().toISOString(),
+        noticeViews: 89
+      },
+      {
+        noticeId: 4,
+        noticeTitle: 'Submission Deadline Reminder',
+        noticeContent: 'Please note that the submission deadline for the next issue is approaching soon.',
+        noticeType: 'DEADLINE',
+        noticePriority: 'URGENT',
+        noticePublishDate: new Date().toISOString(),
+        noticeViews: 67
+      },
+      {
+        noticeId: 5,
+        noticeTitle: 'System Update Complete',
+        noticeContent: 'Our platform has been updated with new features and improved performance.',
+        noticeType: 'UPDATE',
+        noticePriority: 'NORMAL',
+        noticePublishDate: new Date().toISOString(),
+        noticeViews: 34
       }
     ]
   } finally {
@@ -157,14 +193,11 @@ const formatDate = (dateString) => {
 }
 
 const getNoticeTypeText = (type) => {
-  const typeMap = {
-    'ANNOUNCEMENT': 'Announcement',
-    'CALL_FOR_PAPERS': 'Call for Papers',
-    'CONFERENCE': 'Conference',
-    'DEADLINE': 'Deadline',
-    'UPDATE': 'Update'
-  }
-  return typeMap[type] || type
+  // 将下划线替换为空格，首字母大写
+  return type
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ')
 }
 
 // Gradient palette by type
@@ -211,7 +244,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 组件样式导入 */
+/* Notices页面专用样式 */
+@import '@/assets/styles/pages/notices.css';
 @import '@/assets/styles/components/article-cards.css';
-@import '@/assets/styles/components/feedback.css';
 </style>

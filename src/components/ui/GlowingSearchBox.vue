@@ -5,6 +5,12 @@
       :class="{ 'is-focused': isFocused }"
       @click="handleClick"
     >
+      <!-- 彩虹流转轮廓 -->
+      <div class="rainbow-border"></div>
+      
+      <!-- 输入框背景 -->
+      <div class="input-bg"></div>
+      
       <input
         ref="searchInput"
         :value="modelValue"
@@ -84,7 +90,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
-/* 组件样式导入 */
+<style>
+/* GlowingSearchBox组件样式 */
 @import '@/assets/styles/components/search-box.css';
 </style>

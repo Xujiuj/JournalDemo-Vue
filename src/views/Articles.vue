@@ -1,5 +1,5 @@
 <template>
-  <PageScaffold :show-progress="true" :meteor-count="25" background-type="white">
+  <PageScaffold :show-progress="true" :meteor-count="25" background-type="dark">
     <div class="articles min-h-screen relative overflow-hidden">
       <div class="relative z-10 pb-8 min-h-screen">
         <!-- Main Content: Left Sidebar + Right Articles Grid -->
@@ -406,8 +406,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 组件样式导入 */
-@import '@/assets/styles/components/article-cards.css';
-@import '@/assets/styles/components/forms.css';
-@import '@/assets/styles/components/search-box.css';
+/* Articles页面专用样式 */
+@import '@/assets/styles/pages/articles.css';
 </style>

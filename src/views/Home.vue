@@ -1,8 +1,8 @@
 <template>
   <PageScaffold :show-progress="true" :meteor-count="25" background-type="gradient">
-    <div class="home min-h-screen relative overflow-hidden">
+    <div class="home min-h-screen relative">
       <!-- Hero Section -->
-       <section class="hero-section relative z-10 flex items-start justify-center bg-transparent" style="height: 95vh;">
+       <section class="hero-section relative z-10 flex items-start justify-center bg-transparent" style="height: 85vh;">
         <div class="container mx-auto px-4 w-full h-full flex items-center justify-center">
           <div class="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 max-w-6xl mx-auto w-full">
             <div class="flex-1 max-w-3xl flex flex-col justify-center">
@@ -47,7 +47,7 @@
               </div>
             </div>
             <div class="flex-shrink-0 flex items-center justify-center">
-              <div class="w-64 h-72 lg:w-72 lg:h-80 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 backdrop-blur-sm border border-cyan-400/30 rounded-3xl flex items-center justify-center overflow-hidden animate-scale-in">
+              <div class="w-64 h-72 lg:w-72 lg:h-80 bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-blue-400/30 rounded-3xl flex items-center justify-center overflow-hidden animate-scale-in">
                 <img :src="heroLogo" alt="Journal Cover" class="w-full h-full object-cover rounded-3xl" />
               </div>
             </div>
@@ -56,7 +56,7 @@
       </section>
 
       <!-- 下方板块统一背景区域 -->
-      <div class="relative z-10 bg-gradient-to-b from-slate-900 via-blue-900 to-indigo-900">
+      <div class="relative z-10">
       <!-- Recent Publications Section -->
       <section class="recent-publications-section relative z-10 py-20">
         <div class="container mx-auto px-4">
@@ -322,6 +322,7 @@ import {
 } from '@/utils/article';
 import {
   scrollToElement,
+  scrollToTop,
   initPageAnimations,
   cleanupScrollTriggers,
 } from '@/utils/animations';
@@ -467,7 +468,7 @@ const goToSubmit = () => {
 
 // 平滑滚动到下一栏（RecentPublications）
 const scrollToNextSection = () => {
-  scrollToElement('.recent-publications-section', 80, 0.05);
+  scrollToElement('.recent-publications-section', 80, 0.01);
 };
 
 // 键盘事件处理
@@ -479,18 +480,13 @@ const handleKeyDown = (event) => {
   }
 }
 
-// 滚轮事件处理 - 在Hero区域向下滚动时直接滑动到RecentPublications
-let isScrolling = false
-let lastScrollTime = 0
-const scrollThrottle = 100 // 100ms内只允许一次滚动跳转
+// 滚轮事件处理 - 优化为平滑滚动，不阻止默认行为
+let scrollTimeout = null
+const scrollThrottle = 10 // 10ms内只允许一次滚动跳转（考虑到0.01s动画时长）
 
 const handleWheel = (event) => {
-  if (isScrolling) {
-    event.preventDefault()
-    return
-  }
+  if (scrollTimeout) return // 滚动过程中忽略新的事件
   
-  const currentTime = Date.now()
   const scrollTop = window.scrollY || document.documentElement.scrollTop
   
   // 检查是否在Hero区域（页面顶部到RecentPublications之间的区域）
@@ -505,49 +501,33 @@ const handleWheel = (event) => {
   // 判断当前滚动位置是否在Hero区域内
   const isInHeroArea = scrollTop < heroBottom - 100
   
-  if (isInHeroArea && event.deltaY > 0) {
-    // 在Hero区域向下滚动时，直接滑动到RecentPublications
-    event.preventDefault()
-    event.stopPropagation()
-    
-    if (currentTime - lastScrollTime < scrollThrottle) return
-    
-    isScrolling = true
-    lastScrollTime = currentTime
-    
+  // 仅在特定条件下触发平滑滚动，不影响正常滚动
+  if (isInHeroArea && event.deltaY > 50) {
+    // 大幅滚动时才触发跳转
     scrollToNextSection()
-    
-    // 滚动完成后重置标志
-    setTimeout(() => {
-      isScrolling = false
-    }, 100)
-  } else if (scrollTop > recentPublicationsTop - 200 && scrollTop < recentPublicationsTop + 300 && event.deltaY < 0) {
-    // 在RecentPublications区域顶部向上滚动时，回到Hero区域
-    event.preventDefault()
-    event.stopPropagation()
-    
-    if (currentTime - lastScrollTime < scrollThrottle) return
-    
-    isScrolling = true
-    lastScrollTime = currentTime
-    
+    // 设置防抖，避免快速连续触发
+    scrollTimeout = setTimeout(() => {
+      scrollTimeout = null
+    }, scrollThrottle)
+  } else if (scrollTop > recentPublicationsTop - 200 && scrollTop < recentPublicationsTop + 300 && event.deltaY < -50) {
+    // 在RecentPublications区域顶部大幅向上滚动时回到Hero
     scrollToHeroSection()
-    
-    setTimeout(() => {
-      isScrolling = false
-    }, 100)
+    // 设置防抖，避免快速连续触发
+    scrollTimeout = setTimeout(() => {
+      scrollTimeout = null
+    }, scrollThrottle)
   }
 }
 
-// 滚动到Hero区域
+// 滚动到Hero区域（页面顶部）
 const scrollToHeroSection = () => {
-  scrollToElement('.hero-section', 0, 0.1);
+  scrollToTop(0.01);
 };
 
 onMounted(async () => {
   await loadData();
-  window.addEventListener('keydown', handleKeyDown);
-  window.addEventListener('wheel', handleWheel, { passive: false });
+  // 添加wheel监听，使用passive: true优化滚动性能
+  window.addEventListener('wheel', handleWheel, { passive: true });
 
   // 等待DOM更新后初始化动画
   await nextTick();
@@ -555,8 +535,11 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown);
   window.removeEventListener('wheel', handleWheel);
+  
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout)
+  }
 
   // 清理ScrollTrigger
   cleanupScrollTriggers();
@@ -564,9 +547,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* 组件样式导入 */
-@import '@/assets/styles/components/surfaces.css';
-@import '@/assets/styles/components/buttons.css';
-@import '@/assets/styles/components/article-cards.css';
-@import '@/assets/styles/components/effects.css';
+/* 首页专用样式 */
+@import '@/assets/styles/pages/home.css';
 </style>

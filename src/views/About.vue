@@ -2,10 +2,10 @@
   <PageScaffold :show-progress="true" :meteor-count="25" background-type="dark">
     <div class="about min-h-screen relative overflow-hidden">
       <!-- Hero Section -->
-      <section class="hero-section relative z-10 flex items-center justify-center bg-transparent" style="height: 100vh;">
-        <div class="container mx-auto px-4 w-full h-full flex items-center justify-center">
-          <div class="max-w-6xl mx-auto w-full">
-            <div class="text-center mb-16">
+      <section class="hero-section relative z-10 py-8 md:py-12">
+        <div class="container mx-auto px-4">
+          <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
               <h1 class="text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight font-serif mb-6 animate-fade-in drop-shadow-2xl">
                 {{ displayName }}
               </h1>
@@ -232,6 +232,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 组件样式导入 */
-@import '@/assets/styles/components/surfaces.css';
+/* About页面样式 - 已全局导入组件样式 */
 </style>

@@ -45,7 +45,7 @@ import { articleApi } from '@/api';
 import PageScaffold from '@/components/layout/PageScaffold.vue';
 
 const userStore = useUserStore();
-const user = computed(() => userStore.getUserInfo);
+const user = computed(() => userStore.currentUser);
 
 const loading = ref(false)
 const submissions = ref([])
@@ -83,7 +83,5 @@ onMounted(loadSubmissions)
 </script>
 
 <style scoped>
-/* 组件样式导入 */
-@import '@/assets/styles/components/article-cards.css';
-@import '@/assets/styles/components/forms.css';
+/* MySubmissions页面样式 - 已全局导入组件样式 */
 </style>

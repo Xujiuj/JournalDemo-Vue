@@ -5,6 +5,7 @@
 
 /* ========== Label 标签 ========== */
 .form-label,
+.auth-label,
 label.form-label {
   display: block;
   font-weight: 600;
@@ -16,38 +17,45 @@ label.form-label {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 600;
 }
 
 .dark .form-label,
+.dark .auth-label,
 .dark label.form-label {
   color: #ffffff !important; /* 深色主题下也是白色 */
 }
 
 /* Label 中的必填标记 */
 .form-label .text-red-400,
-.form-label span.text-red-400 {
+.auth-label .text-red-400,
+.form-label span.text-red-400,
+.auth-label span.text-red-400 {
   color: #f87171 !important;
 }
 
 /* ========== 输入框（Input, Textarea, Select） ========== */
+/* 只针对表单元素，使用特定的类名，避免影响其他组件（如搜索框、作者弹窗） */
 .form-control,
 .form-input,
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="tel"],
-input[type="number"],
-input[type="search"],
-textarea,
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="tel"],
+.form-group input[type="number"],
+form input[type="text"]:not(.search-input),
+form input[type="email"]:not(.search-input),
+form input[type="password"]:not(.search-input),
+form input[type="tel"]:not(.search-input),
+form input[type="number"]:not(.search-input),
+textarea:not(.author-modal textarea):not(.article-details textarea),
 select.form-input,
 select.form-control {
   width: 100%;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(100, 116, 139, 0.4); /* slate-500 with opacity */
-  background-color: rgba(30, 41, 59, 0.98) !important; /* slate-800, 提高不透明度以提高清晰度 */
+  border-radius: 0.75rem; /* rounded-xl */
+  border: 1px solid rgba(100, 116, 139, 0.4) !important; /* slate-500 with opacity */
+  background-color: rgba(15, 23, 42, 0.8) !important; /* slate-900/80 */
   color: #ffffff !important; /* 输入文字颜色为白色 */
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.25rem; /* py-4 px-5 */
   font-size: 1rem;
   line-height: 1.5;
   transition: all 0.3s ease;
@@ -62,47 +70,51 @@ select.form-control {
 /* Placeholder 文字颜色 */
 .form-control::placeholder,
 .form-input::placeholder,
-input[type="text"]::placeholder,
-input[type="email"]::placeholder,
-input[type="password"]::placeholder,
-input[type="tel"]::placeholder,
-input[type="number"]::placeholder,
-input[type="search"]::placeholder,
-textarea::placeholder {
-  color: rgba(148, 163, 184, 0.7) !important; /* slate-400 with opacity */
+.form-group input[type="text"]::placeholder,
+.form-group input[type="email"]::placeholder,
+.form-group input[type="password"]::placeholder,
+.form-group input[type="tel"]::placeholder,
+.form-group input[type="number"]::placeholder,
+form input[type="text"]:not(.search-input)::placeholder,
+form input[type="email"]:not(.search-input)::placeholder,
+form input[type="password"]:not(.search-input)::placeholder,
+form input[type="tel"]:not(.search-input)::placeholder,
+form input[type="number"]:not(.search-input)::placeholder,
+textarea:not(.author-modal textarea):not(.article-details textarea)::placeholder {
+  color: rgba(148, 163, 184, 0.5) !important; /* slate-500 with opacity */
   opacity: 1;
 }
 
 /* Focus 状态 */
 .form-control:focus,
 .form-input:focus,
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="tel"]:focus,
-input[type="number"]:focus,
-input[type="search"]:focus,
-textarea:focus,
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group input[type="number"]:focus,
+form input[type="text"]:not(.search-input):focus,
+form input[type="email"]:not(.search-input):focus,
+form input[type="password"]:not(.search-input):focus,
+form input[type="tel"]:not(.search-input):focus,
+form input[type="number"]:not(.search-input):focus,
+textarea:not(.author-modal textarea):not(.article-details textarea):focus,
 select.form-input:focus,
 select.form-control:focus {
-  border-color: rgba(245, 158, 11, 0.6) !important; /* amber-500 with opacity */
-  background-color: rgba(30, 41, 59, 0.95) !important;
+  border-color: rgba(103, 232, 249, 1) !important; /* cyan-400 */
   outline: none !important;
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15) !important;
+  box-shadow: 0 0 0 2px rgba(103, 232, 249, 0.2) !important;
   color: #ffffff !important;
 }
 
 /* Disabled 状态 */
 .form-control:disabled,
 .form-input:disabled,
-input[type="text"]:disabled,
-input[type="email"]:disabled,
-input[type="password"]:disabled,
-input[type="tel"]:disabled,
-textarea:disabled,
+.form-group input:disabled,
+form input:not(.search-input):disabled,
+textarea:not(.author-modal textarea):not(.article-details textarea):disabled,
 select.form-input:disabled,
-select.form-control:disabled,
-select:disabled {
+select.form-control:disabled {
   opacity: 0.5 !important;
   cursor: not-allowed !important;
   background-color: rgba(15, 23, 42, 0.6) !important;
@@ -113,7 +125,7 @@ select:disabled {
 /* ========== Textarea 特殊样式 ========== */
 .form-control[type="textarea"],
 textarea.form-control,
-textarea {
+.form-group textarea {
   resize: vertical;
   min-height: 120px;
   font-family: inherit;
@@ -121,8 +133,7 @@ textarea {
 
 /* ========== Select 下拉框 ========== */
 select.form-input,
-select.form-control,
-select {
+select.form-control {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23cbd5e1' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -133,15 +144,13 @@ select {
 }
 
 select.form-input:hover,
-select.form-control:hover,
-select:hover {
+select.form-control:hover {
   border-color: rgba(148, 163, 184, 0.6);
 }
 
 /* Select option 样式 */
 select.form-input option,
-select.form-control option,
-select option {
+select.form-control option {
   background-color: rgba(30, 41, 59, 0.95);
   color: #ffffff;
   padding: 0.5rem;
@@ -151,13 +160,13 @@ select option {
 .form-help {
   display: block;
   font-size: 0.75rem;
-  color: rgba(148, 163, 184, 0.8) !important; /* slate-400 with opacity */
-  margin-top: 0.375rem;
+  color: rgba(148, 163, 184, 0.6) !important; /* slate-400 with opacity */
+  margin-top: 0.25rem;
   line-height: 1.4;
 }
 
 .dark .form-help {
-  color: rgba(148, 163, 184, 0.8) !important;
+  color: rgba(148, 163, 184, 0.6) !important;
 }
 
 /* 错误提示文字 */
@@ -265,73 +274,9 @@ input[type="radio"]:checked::after {
   margin-bottom: 1.5rem;
 }
 
-/* ========== 兼容性处理 ========== */
-/* Login 页面使用的 auth-label */
-.auth-label {
-  color: #ffffff !important;
-  font-weight: 600;
-  font-size: 0.95rem;
-  margin-bottom: 0.5rem;
-}
-
 /* 确保所有 label 都是白色（排除 article-details 页面） */
-:not(.article-details) label {
-  color: #ffffff !important;
-}
-
-/* 强制覆盖所有内联样式 - 确保统一性 */
-/* Register, Contact, Login, Submit 等页面（排除 article-details，保持原样） */
-.register label,
-.contact label,
-.login label,
-.submit label,
+:not(.article-details) .form-label,
+:not(.article-details) .auth-label,
 :not(.article-details) form label {
-  color: #ffffff !important;
-}
-
-/* 所有表单输入元素（排除 article-details） */
-.register input,
-.register textarea,
-.register select,
-.contact input,
-.contact textarea,
-.contact select,
-.login input,
-.login textarea,
-.login select,
-.submit input,
-.submit textarea,
-.submit select {
-  background-color: rgba(30, 41, 59, 0.8) !important;
-  border-color: rgba(100, 116, 139, 0.4) !important;
-  color: #ffffff !important;
-}
-
-.register input::placeholder,
-.register textarea::placeholder,
-.contact input::placeholder,
-.contact textarea::placeholder,
-.login input::placeholder,
-.login textarea::placeholder,
-.submit input::placeholder,
-.submit textarea::placeholder {
-  color: rgba(148, 163, 184, 0.7) !important;
-}
-
-.register input:focus,
-.register textarea:focus,
-.register select:focus,
-.contact input:focus,
-.contact textarea:focus,
-.contact select:focus,
-.login input:focus,
-.login textarea:focus,
-.login select:focus,
-.submit input:focus,
-.submit textarea:focus,
-.submit select:focus {
-  border-color: rgba(245, 158, 11, 0.6) !important;
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15) !important;
-  background-color: rgba(30, 41, 59, 0.95) !important;
   color: #ffffff !important;
 }

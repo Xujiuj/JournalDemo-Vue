@@ -1,31 +1,12 @@
 <template>
   <PageScaffold :meteor-count="25" background-type="dark">
     <div class="container mx-auto px-4 py-12 relative z-10">
-      <!-- Breadcrumb Navigation -->
-      <nav class="mb-8 pt-4" aria-label="Breadcrumb">
-        <ol class="flex items-center space-x-2 text-sm">
-          <li>
-            <router-link 
-              :to="ROUTES.home" 
-              class="text-slate-400 hover:text-white transition-colors duration-300 flex items-center"
-            >
-              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-              </svg>
-              Home
-            </router-link>
-          </li>
-          <li class="text-slate-500">/</li>
-          <li class="text-white">Login</li>
-        </ol>
-      </nav>
-
       <!-- Login Form Container -->
       <div class="max-w-lg mx-auto">
         <!-- Glow effect background -->
         <div class="absolute -inset-4 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-700 rounded-3xl opacity-20 blur-3xl group-hover:opacity-30 transition-opacity"></div>
         
-        <div class="relative bg-gradient-to-br from-slate-900/98 via-blue-900/98 to-indigo-900/98 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border border-cyan-500/50 overflow-hidden">
+        <div class="relative bg-gradient-to-br from-slate-900/90 via-slate-800/90 to-slate-900/90 backdrop-blur-md rounded-3xl shadow-2xl p-10 border border-amber-500/40 overflow-hidden">
           <!-- Animated background gradient -->
           <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-blue-600/5 to-indigo-700/5"></div>
           
@@ -41,45 +22,31 @@
           <form @submit.prevent="handleLogin" class="relative space-y-6">
             <!-- Username -->
             <div class="form-group">
-              <label class="auth-label block text-sm font-semibold mb-3">Email</label>
-              <div class="relative group/input">
-                <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
-               <input
-                 v-model="formData.username"
-                   type="email"
-                   name="email"
-                   autocomplete="email"
-                 required
-                   class="relative w-full px-5 py-4 bg-slate-900/80 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all"
-                   placeholder="Enter your Email"
-               />
-              </div>
+              <label class="form-label">Email</label>
+              <input
+                v-model="formData.username"
+                type="email"
+                name="email"
+                autocomplete="email"
+                required
+                class="form-control"
+                placeholder="Enter your Email"
+              />
             </div>
 
             <!-- Password -->
             <div class="form-group">
-              <label class="auth-label block text-sm font-semibold mb-3">Password</label>
-              <div class="relative group/input">
-                <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl opacity-0 group-hover/input:opacity-30 blur transition-opacity"></div>
-               <input
-                 v-model="formData.password"
-                 type="password"
-                   name="password"
-                   autocomplete="current-password"
-                   required 
-                   :class="[
-                     'relative w-full px-5 py-4 bg-slate-900/80 border rounded-xl text-white placeholder-slate-500 focus:outline-none transition-all',
-                     loginError ? 'border-red-500 focus:border-red-500 ring-2 ring-red-500/30 animate-shake' : 'border-slate-600 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20'
-                   ]"
-                   placeholder="Enter your password"
-               />
-              </div>
-              <p v-if="loginError" class="mt-2 text-sm text-red-400 flex items-center gap-2">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86A2 2 0 0021 17.07L13.41 4.93a2 2 0 00-3.42 0L3 17.07A2 2 0 005.07 19z"/>
-                </svg>
-                {{ loginError }}
-              </p>
+              <label class="form-label">Password</label>
+              <input
+                v-model="formData.password"
+                type="password"
+                name="password"
+                autocomplete="current-password"
+                required 
+                :class="['form-control', loginError && 'input-warning']"
+                placeholder="Enter your password"
+              />
+              <p v-if="loginError" class="form-help field-error">{{ loginError }}</p>
             </div>
 
             <!-- Remember Me and Forgot Password -->
@@ -246,9 +213,7 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
-/* 组件样式导入 */
-@import '@/assets/styles/components/forms.css';
-@import '@/assets/styles/components/buttons.css';
+/* Login页面样式 */
 /* 自定义滚动条 */
 ::-webkit-scrollbar {
   width: 8px;

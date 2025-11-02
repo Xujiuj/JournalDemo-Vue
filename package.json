@@ -30,13 +30,12 @@
     "vue": "^3.4.0",
     "vue-router": "^4.2.5",
     "vue-toastification": "^2.0.0-rc.5",
-    "vue3-marquee": "^0.1.0",
-    "vuex": "^4.1.0"
+    "vue3-marquee": "^0.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
     "@types/aos": "^3.0.7",
-    "@vitejs/plugin-vue": "^4.5.2",
+    "@vitejs/plugin-vue": "^6.0.1",
     "@vue/eslint-config-prettier": "^10.2.0",
     "autoprefixer": "^10.4.16",
     "eslint": "^9.39.0",
@@ -44,6 +43,6 @@
     "postcss": "^8.4.32",
     "prettier": "^3.6.2",
     "sass": "^1.69.5",
-    "vite": "^5.4.21"
+    "vite": "^7.1.12"
   }
 }

@@ -6,29 +6,11 @@
   padding-right: var(--container-padding);
 }
 
-.page-scaffold {
+/* 全局布局 - App.vue */
+#app {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, rgba(248, 250, 252, 0.95), rgba(226, 232, 240, 0.65));
-  transition: background var(--transition-slow);
-}
-
-.dark .page-scaffold {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 64, 175, 0.45));
-}
-
-.page-scaffold__background {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.page-scaffold__slot {
-  position: relative;
-  z-index: 10;
 }
 
 .section {
@@ -82,3 +64,4 @@
 .layout-stack--three {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
+

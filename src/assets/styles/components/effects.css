@@ -1,0 +1,160 @@
+/* 流光效果 */
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* 脉动效果 */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+/* 悬浮阴影 */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+              box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+}
+
+/* 渐变边框 */
+.gradient-border {
+  position: relative;
+  background: var(--color-neutral-50);
+  border-radius: var(--radius-lg);
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-secondary));
+  z-index: -1;
+  opacity: 0.3;
+}
+
+.dark .gradient-border::before {
+  opacity: 0.5;
+}
+
+/* 玻璃态效果 */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 导航指示器动画 */
+.nav-active-bg {
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: scaleX(0);
+  transform-origin: center;
+}
+
+.nav-active-bg.active {
+  transform: scaleX(1);
+}
+
+.nav-active-bg.slide-left {
+  transform-origin: left;
+  animation: slideInFromRight 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.nav-active-bg.slide-right {
+  transform-origin: right;
+  animation: slideInFromLeft 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+}
+
+/* 底部指示条 */
+.nav-indicator {
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+              opacity 0.3s ease;
+  transform-origin: center;
+}
+
+.nav-indicator.scale-x-100 {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+/* 流星容器 */
+.meteor-container {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 页面进度条 */
+.page-progress {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--color-brand-primary),
+    var(--color-brand-secondary)
+  );
+  z-index: 9999;
+  transition: width 0.2s ease;
+}
+

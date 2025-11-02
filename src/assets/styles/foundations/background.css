@@ -1,0 +1,60 @@
+/* ============================================
+   全局渐变背景 - 统一定义，避免重复
+   ============================================ */
+
+/* 主蓝紫渐变 */
+.gradient-primary {
+  background: linear-gradient(135deg, #3730a3 0%, #581c87 50%, #3730a3 100%);
+}
+
+/* 从上到下的蓝紫渐变 */
+.gradient-vertical-primary {
+  background: linear-gradient(to bottom, #3730a3, #581c87);
+}
+
+/* 从下到上的蓝紫渐变 */
+.gradient-vertical-reverse-primary {
+  background: linear-gradient(to top, #581c87, #3730a3);
+}
+
+/* 径向渐变装饰 */
+.gradient-radial-primary {
+  background: radial-gradient(ellipse at top, rgba(102, 126, 234, 0.2), transparent 50%),
+              radial-gradient(ellipse at bottom right, rgba(118, 75, 162, 0.15), transparent 50%);
+}
+
+/* ============================================
+   页面背景类型
+   ============================================ */
+
+.page-background-white {
+  background: transparent;
+}
+
+.dark .page-background-white {
+  background: transparent;
+}
+
+.page-background-dark {
+  background: linear-gradient(135deg, #3730a3 0%, #581c87 50%, #3730a3 100%);
+}
+
+.dark .page-background-dark {
+  background: linear-gradient(135deg, #3730a3 0%, #581c87 50%, #3730a3 100%);
+}
+
+.page-background-gradient {
+  background: linear-gradient(135deg, #3730a3 0%, #581c87 50%, #3730a3 100%);
+}
+
+.dark .page-background-gradient {
+  background: linear-gradient(135deg, #3730a3 0%, #581c87 50%, #3730a3 100%);
+}
+
+.page-background-transparent {
+  background: transparent;
+}
+
+.dark .page-background-transparent {
+  background: transparent;
+}

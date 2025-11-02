@@ -1,18 +1,10 @@
 <template>
   <div id="app">
     <Header />
-    <main>
+    <main class="transition-container">
       <router-view v-slot="{ Component, route }">
         <transition
-          name="slide-transition"
-          @before-enter="onBeforeEnter"
-          @enter="onEnter"
-          @after-enter="onAfterEnter"
-          @leave="onLeave"
-          @after-leave="onAfterLeave"
-          @enter-cancelled="onEnterCancelled"
-          @leave-cancelled="onLeaveCancelled"
-          :css="false"
+          :name="transitionName"
         >
           <component :is="Component" :key="route.path" />
         </transition>
@@ -36,29 +28,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSysInfoStore } from './stores';
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 import { scrollToTop, onScroll } from './utils/scroll.js';
 import { isForward } from './utils/routeOrder.js';
-import {
-  routeTransition,
-  shouldUseFade,
-  onBeforeEnter,
-  onEnter,
-  onAfterEnter,
-  onLeave,
-  onAfterLeave,
-  onEnterCancelled,
-  onLeaveCancelled,
-} from './utils/animations';
 
 const router = useRouter();
 const sysInfoStore = useSysInfoStore();
 
 const showBackToTop = ref(false);
+const transitionName = ref('slide-forward');
 
 // 滚动监听
 let removeScrollListener = null;
@@ -71,17 +53,14 @@ const handleScroll = (position) => {
 onMounted(() => {
   // 开始监听滚动事件
   removeScrollListener = onScroll(handleScroll);
-
-  // 监听路由变化，在导航之前设置动画状态
+  
+  // 监听路由变化，动态设置过渡动画
   router.beforeEach((to, from, next) => {
-    // 只在有from路由时设置动画状态（避免首次加载时出错）
-    if (from && from.path) {
-      routeTransition.useFade = shouldUseFade(from, to);
-      if (!routeTransition.useFade) {
-        routeTransition.isForward = isForward(from, to, sysInfoStore);
-      }
+    if (from.name && to.name) {
+      const forward = isForward(from, to, sysInfoStore);
+      transitionName.value = forward ? 'slide-forward' : 'slide-back';
     }
-    next(); // 确保不阻塞导航
+    next();
   });
 });
 
@@ -90,20 +69,30 @@ onUnmounted(() => {
   if (removeScrollListener) {
     removeScrollListener();
   }
-  // 清理 GSAP 动画
-  if (routeTransition.enterTween) {
-    routeTransition.enterTween.kill();
-  }
-  if (routeTransition.leaveTween) {
-    routeTransition.leaveTween.kill();
-  }
 });
 </script>
 
+<style scoped>
+/* App.vue 专用样式 - 使用scoped避免全局污染 */
+.transition-container {
+  position: relative;
+  width: 100%;
+}
+</style>
+
 <style>
-/* 基础样式和工具类 */
+/* 全局样式导入 */
 @import './assets/styles/index.css';
-/* App组件需要的样式 */
 @import './assets/styles/components/app-transitions.css';
+@import './assets/styles/components/forms.css';
+
+/* App布局相关的全局样式 - 最小化影响 */
+#app main {
+  flex: 1;
+}
+
+#app main router-view {
+  display: block;
+}
 </style>
 

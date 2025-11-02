@@ -1,6 +1,7 @@
 <template>
-  <div class="article-details min-h-screen bg-white dark:bg-slate-900 py-8">
-    <div class="container mx-auto px-4">
+  <PageScaffold :meteors="false" :show-progress="false" background-type="white">
+  <div class="article-details min-h-screen bg-white dark:bg-slate-900">
+    <div class="container mx-auto px-4 pb-8">
       <!-- 面包屑导航 -->
       <nav class="mb-6 text-sm" aria-label="breadcrumb">
         <ol class="flex items-center space-x-2">
@@ -342,34 +343,30 @@
         <!-- 右侧固定导航栏 -->
         <div v-if="!loading && !error" class="hidden xl:block flex-shrink-0 w-64">
           <div class="sticky-section sticky h-fit z-10 self-start" style="top: calc(136px + 96px); margin-top: calc(400px - 136px - 96px);">
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4">
-            <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-3">Sections</h3>
+            <div>
+            <h3>Sections</h3>
             <nav class="space-y-2">
               <a 
                 href="#abstract"
                 @click.prevent="scrollToSection('abstract')"
-                class="block text-sm text-blue-600 dark:text-blue-400 hover:underline py-1 whitespace-nowrap"
               >
                 Abstract
               </a>
               <a 
                 href="#author-information"
                 @click.prevent="scrollToSection('author-information')"
-                class="block text-sm text-blue-600 dark:text-blue-400 hover:underline py-1 whitespace-nowrap"
               >
                 Author information
               </a>
               <a 
                 href="#supplementary-information"
                 @click.prevent="scrollToSection('supplementary-information')"
-                class="block text-sm text-blue-600 dark:text-blue-400 hover:underline py-1 whitespace-nowrap"
               >
                 Supplementary information
               </a>
               <a 
                 href="#about-this-article"
                 @click.prevent="scrollToSection('about-this-article')"
-                class="block text-sm text-blue-600 dark:text-blue-400 hover:underline py-1 whitespace-nowrap"
               >
                 About this article
               </a>
@@ -391,28 +388,19 @@
       <!-- 弹窗内容（气泡样式） -->
       <div
         v-if="showAuthorModal && selectedAuthor"
-        class="author-modal fixed bg-white dark:bg-slate-800 rounded-lg shadow-2xl w-96 p-4 z-[60]"
+        class="author-modal"
         :style="{ top: authorModalPosition.top + 'px', left: authorModalPosition.left + 'px' }"
         @click.stop
       >
           <!-- 气泡箭头 -->
-          <div class="absolute -top-2 left-6 w-4 h-4 bg-white dark:bg-slate-800 transform rotate-45 border-l border-t border-slate-200 dark:border-slate-700"></div>
-          <!-- 关闭按钮 -->
-          <button
-            @click="closeAuthorModal"
-            class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-            </svg>
-          </button>
-
+          <div class="author-modal-arrow"></div>
+          
           <!-- 作者标题 -->
           <div class="mb-4">
-            <h3 v-if="selectedAuthor.authorIsCorresponding" class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">
+            <h3 v-if="selectedAuthor.authorIsCorresponding">
               Corresponding author
             </h3>
-            <h4 class="text-xl font-bold text-slate-900 dark:text-white">
+            <h4>
               {{ selectedAuthor.authorName }}
             </h4>
           </div>
@@ -420,10 +408,10 @@
           <!-- 单位信息（机构） -->
           <div class="mb-4">
             <div class="space-y-1">
-              <p v-if="selectedAuthor.authorDepartment" class="text-sm text-slate-700 dark:text-slate-300">
+              <p v-if="selectedAuthor.authorDepartment">
                 {{ selectedAuthor.authorDepartment }}
               </p>
-              <p v-if="selectedAuthor.authorAffiliation" class="text-sm text-slate-700 dark:text-slate-300">
+              <p v-if="selectedAuthor.authorAffiliation">
                 {{ selectedAuthor.authorAffiliation }}
                 <span v-if="selectedAuthor.authorCity && selectedAuthor.authorCity !== '<NA>'">, {{ selectedAuthor.authorCity }}</span>
                 <span v-if="selectedAuthor.authorState && selectedAuthor.authorState !== '<NA>'">, {{ selectedAuthor.authorState }}</span>
@@ -433,23 +421,22 @@
           </div>
 
           <!-- 分隔线 -->
-          <hr class="my-4 border-slate-200 dark:border-slate-700" />
+          <hr class="my-4" />
 
           <!-- 通讯作者联系信息 -->
           <div v-if="selectedAuthor.authorIsCorresponding === 1" class="mb-4">
             <div class="flex items-center gap-2 mb-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-600 dark:text-slate-400 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                 <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
               </svg>
               <a 
                 v-if="selectedAuthor.authorEmail"
                 :href="`mailto:${selectedAuthor.authorEmail}`"
-                class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
               >
                 Contact {{ selectedAuthor.authorName }}
               </a>
-              <span v-else class="text-sm text-slate-600 dark:text-slate-400">
+              <span v-else>
                 Contact {{ selectedAuthor.authorName }}
               </span>
             </div>
@@ -458,7 +445,6 @@
           <!-- 搜索作者文章按钮 -->
           <button
             @click="searchAuthorPublications"
-            class="w-full flex items-center justify-center gap-2 px-4 py-2 border-2 border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
@@ -468,6 +454,7 @@
         </div>
     </Teleport>
   </div>
+  </PageScaffold>
 </template>
 
 <script setup>
@@ -475,6 +462,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { articleApi } from '@/api';
 import { useSysInfoStore, useReferenceDataStore } from '@/stores';
+import PageScaffold from '@/components/layout/PageScaffold.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -568,18 +556,9 @@ const openAuthorModal = (event, author) => {
   const viewportWidth = window.innerWidth
   const viewportHeight = window.innerHeight
   
-  // 默认显示在点击元素的下方右侧
+  // 默认显示在点击元素的下方，左对齐
   let top = rect.bottom + spacing
-  let left = rect.right + spacing
-  
-  // 如果右侧空间不够，显示在左侧
-  if (left + modalWidth > viewportWidth - 20) {
-    left = rect.left - modalWidth - spacing
-    if (left < 20) {
-      // 如果左侧也不够，就显示在元素下方，左对齐
-      left = Math.max(20, rect.left)
-    }
-  }
+  let left = rect.left
   
   // 如果下方空间不够，显示在上方
   if (top + modalHeight > viewportHeight - 20) {
@@ -729,7 +708,7 @@ const generateCitations = () => {
   const volume = article.value.articleVolume || 'N/A'
   const pages = article.value.articlePages || 'N/A'
   const doi = article.value.articleDoi || 'N/A'
-  
+  console.log(article)
   // APA格式
   formats.push({
     label: 'APA',

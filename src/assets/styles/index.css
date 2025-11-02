@@ -13,4 +13,5 @@
 @import './utilities/helpers.css';
 @import './utilities/text-clarity.css';
 
-/* 组件样式不再全局导入，由各页面按需导入 */
+/* Components - 全局组件样式 */
+@import './components/surfaces.css';

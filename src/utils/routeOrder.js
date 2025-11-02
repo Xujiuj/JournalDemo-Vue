@@ -15,11 +15,11 @@ function getRouteMenuId(route, store) {
   // 如果store可用，尝试从菜单列表中查找对应路径的menuId
   if (store) {
     try {
-      // 支持Pinia store (有getMenuList属性) 或 Vuex store (有getters属性)
+      // 支持Pinia store 或 Vuex store
       let menuList = [];
-      if (store.getMenuList) {
-        // Pinia store
-        menuList = store.getMenuList || [];
+      if (store.menuList) {
+        // Pinia store - 直接访问menuList
+        menuList = store.menuList || [];
       } else if (store.getters && store.getters['sysInfo/getMenuList']) {
         // Vuex store
         menuList = store.getters['sysInfo/getMenuList'] || [];

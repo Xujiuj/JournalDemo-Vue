@@ -1,6 +1,6 @@
 <template>
   <PageScaffold :meteor-count="25" background-type="dark">
-    <div class="contact min-h-screen bg-gradient-to-b from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+    <div class="contact min-h-screen relative overflow-hidden">
       <div class="container relative z-10 mx-auto px-4 py-16">
         <!-- Page Header -->
         <section class="relative z-10 py-8 md:py-12">
@@ -38,61 +38,61 @@
             <h2 class="text-xl font-serif font-semibold mb-4 text-white leading-tight">Send us a Message</h2>
             <form @submit.prevent="submitMessage" class="space-y-4">
               <div class="grid gap-4 sm:grid-cols-2">
-                <label class="form-label">
-                      Name <span class="text-red-400">*</span>
-                    <input
-                        v-model="form.name"
-                        type="text"
-                        required
-                        placeholder="Your full name"
-                    class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
-                    />
-                </label>
-                <label class="form-label">
-                      Email <span class="text-red-400">*</span>
-                    <input
-                        v-model="form.email"
-                        type="email"
-                        required
-                        placeholder="your.email@example.com"
-                    class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
-                    />
-                </label>
+                <div class="form-group">
+                  <label class="form-label">Name <span class="text-red-400">*</span></label>
+                  <input
+                    v-model="form.name"
+                    type="text"
+                    required
+                    placeholder="Your full name"
+                    class="form-control"
+                  />
                 </div>
-
-              <label class="form-label">
-                     Phone
+                <div class="form-group">
+                  <label class="form-label">Email <span class="text-red-400">*</span></label>
                   <input
-                      v-model="form.phone"
-                      type="tel"
-                      placeholder="Your phone number"
-                  class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
+                    v-model="form.email"
+                    type="email"
+                    required
+                    placeholder="your.email@example.com"
+                    class="form-control"
                   />
-              </label>
+                </div>
+              </div>
 
-              <label class="form-label">
-                     Subject <span class="text-red-400">*</span>
-                  <input
-                      v-model="form.subject"
-                      type="text"
-                      required
-                      placeholder="Message subject"
-                  class="w-full rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
-                  />
-              </label>
+              <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input
+                  v-model="form.phone"
+                  type="tel"
+                  placeholder="Your phone number"
+                  class="form-control"
+                />
+              </div>
 
-              <label class="form-label">
-                     Message <span class="text-red-400">*</span>
-                  <textarea
-                      v-model="form.message"
+              <div class="form-group">
+                <label class="form-label">Subject <span class="text-red-400">*</span></label>
+                <input
+                  v-model="form.subject"
+                  type="text"
+                  required
+                  placeholder="Message subject"
+                  class="form-control"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Message <span class="text-red-400">*</span></label>
+                <textarea
+                  v-model="form.message"
                   rows="5"
                   maxlength="1000"
-                      required
-                      placeholder="Your message..."
-                  class="w-full resize-none rounded-lg border border-slate-600 bg-slate-800 px-4 py-2.5 text-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40"
-                  ></textarea>
+                  required
+                  placeholder="Your message..."
+                  class="form-control resize-none"
+                ></textarea>
                 <span class="block text-right text-xs text-slate-400">{{ form.message.length }}/1000</span>
-              </label>
+              </div>
 
                   <button
                       type="submit"
@@ -271,7 +271,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 组件样式导入 */
-@import '@/assets/styles/components/forms.css';
-@import '@/assets/styles/components/feedback.css';
+/* Contact页面专用样式 */
+@import '@/assets/styles/pages/contact.css';
 </style>

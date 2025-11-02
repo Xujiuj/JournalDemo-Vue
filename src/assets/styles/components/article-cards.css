@@ -72,6 +72,27 @@
   transform: scaleX(1);
 }
 
+/* Notices 页面卡片根据类型动态变色 */
+.article-card[data-notice-type="ANNOUNCEMENT"]:hover::after {
+  background: linear-gradient(90deg, #06b6d4, #3b82f6, #2563eb);
+}
+
+.article-card[data-notice-type="CALL_FOR_PAPERS"]:hover::after {
+  background: linear-gradient(90deg, #f59e0b, #eab308, #d97706);
+}
+
+.article-card[data-notice-type="CONFERENCE"]:hover::after {
+  background: linear-gradient(90deg, #8b5cf6, #a855f7, #9333ea);
+}
+
+.article-card[data-notice-type="DEADLINE"]:hover::after {
+  background: linear-gradient(90deg, #f43f5e, #ef4444, #dc2626);
+}
+
+.article-card[data-notice-type="UPDATE"]:hover::after {
+  background: linear-gradient(90deg, #10b981, #059669, #047857);
+}
+
 /* 卡片内容区域 */
 .article-card-content {
   @apply relative z-10;

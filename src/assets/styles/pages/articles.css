@@ -5,12 +5,10 @@
 /* 主容器 */
 .articles {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
 }
 
 /* 页面头部 */
 .articles-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 3rem 0;
   text-align: center;

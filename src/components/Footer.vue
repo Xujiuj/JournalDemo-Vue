@@ -1,7 +1,7 @@
 <template>
-  <footer class="relative z-10 bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-sm text-white py-16">
+  <footer class="relative z-10 bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-sm text-white pt-12 pb-2 mt-auto">
     <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-6">
         <!-- Journal Info -->
         <div class="space-y-4">
           <h3 class="text-xl font-bold text-slate-100 font-serif">
@@ -59,7 +59,7 @@
       </div>
 
       <!-- Footer Bottom -->
-      <div class="border-t border-slate-600 pt-8">
+      <div class="border-t border-slate-600 pt-4 mt-4">
         <div class="text-center">
           <p class="text-slate-300 text-sm">&copy; {{ currentYear }}
             {{ displayName }}. All rights reserved.</p>
@@ -77,7 +77,7 @@ const sysInfoStore = useSysInfoStore();
 
 // 从 Pinia store 获取系统信息和菜单
 const branding = computed(() => sysInfoStore.brandingInfo);
-const menuList = computed(() => sysInfoStore.getMenuList || []);
+const menuList = computed(() => sysInfoStore.menuList || []);
 const currentYear = computed(() => new Date().getFullYear())
 const displayShortName = computed(() => branding.value.shortName)
 const displayMission = computed(() => branding.value.mission)
@@ -93,6 +93,5 @@ const quickLinks = computed(() =>
 </script>
 
 <style scoped>
-/* 组件样式导入 */
-@import '@/assets/styles/components/footer.css';
+/* Footer组件不再导入样式，使用内联Tailwind类 */
 </style>

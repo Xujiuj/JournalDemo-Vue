@@ -1,5 +1,5 @@
 <template>
-  <div :class="['page-scaffold', 'min-h-screen relative overflow-hidden', backgroundClass]">
+  <div :class="['page-scaffold', 'relative', backgroundClass]">
     <!-- 流星特效容器 -->
     <div
       v-if="meteors"
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="relative z-10">
+    <div class="relative z-10 pt-32">
       <slot :scrollProgress="scrollProgress"></slot>
     </div>
   </div>
@@ -105,6 +105,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* 组件样式导入 */
+/* PageScaffold组件样式 */
 @import '@/assets/styles/components/effects.css';
 </style>
